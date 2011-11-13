@@ -1,0 +1,7 @@
+# Ignore files *.a и *.o
+*.[oa]
+# Ignore qt user files
+*.pro.user
+Makefile*
+debug/
+release/
