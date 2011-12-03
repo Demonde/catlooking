@@ -29,7 +29,7 @@ void Utils::installFont(QString resourceFilePath)
     }
     catch (UtilsException& exception)
     {
-        std::cerr << exception.what();
+//        std::cerr << exception.what();
     }
 }
 
@@ -132,7 +132,7 @@ bool Utils::isFilesEqualsByMd5(QString firstFilePath, QString secondFilePath)
     }
     catch (UtilsException& exception)
     {
-        std::cerr << exception.what();
+//        std::cerr << exception.what();
     }
     return equals;
 }
