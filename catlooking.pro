@@ -8,15 +8,19 @@ SOURCES += main.cpp\
         mainwindow.cpp\
         singleapplication.cpp\
         utils.cpp\
-    appcontrol.cpp
+    appcontrol.cpp \
+    appmodel.cpp
 
 HEADERS  += mainwindow.h\
         singleapplication.h\
         utils.h\
-    appcontrol.h
+    appcontrol.h \
+    appmodel.h
 
 debug {
     DEFINES += DEBUG
 }
+
+
 
 

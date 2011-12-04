@@ -1,9 +1,11 @@
 #include "appcontrol.h"
+#include "utils.h"
 
 AppControl::AppControl(QObject *parent) :
     QObject(parent)
 {
         mainWindow.show();
+        installFonts();
 }
 
 void AppControl::receiveApplicationMessage(QString message)
@@ -14,3 +16,8 @@ void AppControl::receiveApplicationMessage(QString message)
     }
 }
 
+void AppControl::installFonts()
+{
+//    Utils::installFont(":/fonts/fonts/LiberationSans.ttf");
+//    Utils::installFont(":/fonts/fonts/LiberationSerif.ttf");
+}

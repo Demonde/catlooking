@@ -6,6 +6,7 @@
 #include <QSystemTrayIcon>
 #include <QDir>
 #include <QRegExp>
+#include "appmodel.h"
 
 class MainWindow : public QFrame
 {
@@ -19,8 +20,8 @@ public slots:
     void showWindow();
 
 private:
+    AppModel *appModel;
     void setIconAndTitle();
-    void installFonts();
     void createCentralWidget();
     void connectControlSignals();
 };

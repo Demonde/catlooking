@@ -1,14 +1,13 @@
 #include <QShortcut>
 #include <QDebug>
 #include "mainwindow.h"
-#include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QFrame(parent)
+    : QFrame(parent),
+      appModel(AppModel::getInstance())
 {
     setIconAndTitle();
     createCentralWidget();
-    installFonts();
     showWindow();
     connectControlSignals();
 }
@@ -42,10 +41,4 @@ void MainWindow::setIconAndTitle()
 {
 //    QApplication::setWindowIcon(QIcon(":/images/images/catlookingwriter.png"));
     setWindowTitle(tr("Catlooking"));
-}
-
-void MainWindow::installFonts()
-{
-    Utils::installFont(":/fonts/fonts/LiberationSans.ttf");
-    Utils::installFont(":/fonts/fonts/LiberationSerif.ttf");
 }

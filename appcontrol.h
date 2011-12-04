@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "mainwindow.h"
+#include "appmodel.h"
 
 class AppControl : public QObject
 {
@@ -14,8 +15,10 @@ public slots:
     void receiveApplicationMessage(QString);
 
 private:
+    AppModel appModel;
     MainWindow mainWindow;
 
+    void installFonts();
 };
 
 #endif // APPCONTROL_H
