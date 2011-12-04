@@ -1,6 +1,6 @@
 #include <QtGui/QApplication>
 #include <QTextCodec>
-#include "mainwindow.h"
+#include "appcontrol.h"
 #include "singleapplication.h"
 
 int main(int argc, char *argv[])
@@ -12,15 +12,14 @@ int main(int argc, char *argv[])
             return 0;
     }
 
-    MainWindow *mainWindow = new MainWindow();
+    AppControl *appControl = new AppControl();
 
     // Connection between several instances of Catlooking
-    QObject::connect(&app, SIGNAL(messageAvailable(QString)), mainWindow, SLOT(receiveApplicationMessage(QString)));
-    mainWindow->show();
+    QObject::connect(&app, SIGNAL(messageAvailable(QString)), appControl, SLOT(receiveApplicationMessage(QString)));
 
     int returnCode;
     returnCode = app.exec();
 
-    delete mainWindow;
+    delete appControl;
     return returnCode;
 }

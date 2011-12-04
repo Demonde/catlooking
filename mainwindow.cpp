@@ -4,7 +4,7 @@
 #include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QFrame(parent)
 {
     setIconAndTitle();
     createCentralWidget();
@@ -36,14 +36,6 @@ void MainWindow::showWindow()
     showNormal();
     activateWindow();
     setWindowState(windowState() | Qt::WindowFullScreen);
-}
-
-void MainWindow::receiveApplicationMessage(QString message)
-{
-    if (message == "Hello. I'm the other instance of catlooking. I'll die. Bye.")
-    {
-        showWindow();
-    }
 }
 
 void MainWindow::setIconAndTitle()

@@ -1,13 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtGui/QMainWindow>
+#include <QtGui/QFrame>
 #include <QSettings>
 #include <QSystemTrayIcon>
 #include <QDir>
 #include <QRegExp>
 
-class MainWindow : public QMainWindow
+class MainWindow : public QFrame
 {
     Q_OBJECT
 
@@ -16,13 +16,9 @@ public:
     ~MainWindow();
 
 public slots:
-    void receiveApplicationMessage(QString);
-
-private slots:
     void showWindow();
 
 private:
-//    WriterWidget *writerWidget;
     void setIconAndTitle();
     void installFonts();
     void createCentralWidget();
