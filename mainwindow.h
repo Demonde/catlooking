@@ -19,11 +19,14 @@ public:
 public slots:
     void showWindow();
 
+private slots:
+    void onModelStateChanged(AppModel::ModelEvent);
+
 private:
     AppModel *appModel;
     void setIconAndTitle();
-    void createCentralWidget();
-    void connectControlSignals();
+    void integrateWithAppModel();
+    void updateUi();
 };
 
 #endif // MAINWINDOW_H

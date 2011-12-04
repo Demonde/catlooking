@@ -2,6 +2,7 @@
 #include "appmodel.h"
 
 AppModel* AppModel::instancePointer(0);
+AppModel::UiState AppModel::uiState(AppModel::OptionsState);
 
 AppModel::AppModel(QObject *parent) :
     QObject(parent)
@@ -17,4 +18,15 @@ AppModel::AppModel(QObject *parent) :
 AppModel* AppModel::getInstance()
 {
     return instancePointer;
+}
+
+void AppModel::closeApplication()
+{
+    uiState = AppModel::CloseState;
+    emit modelWasUpdated(UiStateChanged);
+}
+
+AppModel::UiState AppModel::getUiState()
+{
+    return uiState;
 }

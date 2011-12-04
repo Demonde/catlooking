@@ -7,27 +7,29 @@ MainWindow::MainWindow(QWidget *parent)
       appModel(AppModel::getInstance())
 {
     setIconAndTitle();
-    createCentralWidget();
     showWindow();
-    connectControlSignals();
+    integrateWithAppModel();
 }
 
 MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::createCentralWidget()
+void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent)
 {
-//    writerWidget = new WriterWidget(this);
-//    setCentralWidget(writerWidget);
+    if (AppModel::UiStateChanged == modelEvent)
+    {
+        updateUi();
+    }
 }
 
-void MainWindow::connectControlSignals()
+void MainWindow::integrateWithAppModel()
 {
+    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent)),
+            this, SLOT(onModelStateChanged(AppModel::ModelEvent)));
+
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(close()));
-//    connect(writerWidget, SIGNAL(needClose()), this, SLOT(close()));
-//    connect(writerWidget, SIGNAL(needMinimize()), this, SLOT(showMinimized()));
+    connect(shortcut, SIGNAL(activated()), appModel, SLOT(closeApplication()));
 }
 
 void MainWindow::showWindow()
@@ -41,4 +43,12 @@ void MainWindow::setIconAndTitle()
 {
 //    QApplication::setWindowIcon(QIcon(":/images/images/catlookingwriter.png"));
     setWindowTitle(tr("Catlooking"));
+}
+
+void MainWindow::updateUi()
+{
+    if(AppModel::CloseState == appModel->getUiState())
+    {
+        close();
+    }
 }

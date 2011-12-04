@@ -20,6 +20,6 @@ int main(int argc, char *argv[])
     int returnCode;
     returnCode = app.exec();
 
-    delete appControl;
+    appControl->deleteLater();
     return returnCode;
 }
