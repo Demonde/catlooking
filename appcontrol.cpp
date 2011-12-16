@@ -1,5 +1,6 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QApplication>
+#include <QDebug>
 #include "appcontrol.h"
 #include "utils.h"
 
@@ -9,7 +10,6 @@ AppControl::AppControl(QObject *parent) :
 {
     installFonts();
     createMainWindows();
-    showMainWindows();
 }
 
 AppControl::~AppControl()
@@ -21,7 +21,7 @@ void AppControl::receiveApplicationMessage(QString message)
 {
     if (message == "Hello. I'm the other instance of catlooking. I'll die. Bye.")
     {
-        showMainWindows();
+        recreateMainWindows();
     }
 }
 
@@ -39,6 +39,10 @@ void AppControl::createMainWindows()
     {
         MainWindow *mainWindow = new MainWindow();
         mainWindowsList.append(mainWindow);
+        mainWindow->setGeometry(desktopWidget->screenGeometry(i));
+        mainWindow->setWindowState(mainWindow->windowState() | Qt::WindowFullScreen);
+        mainWindow->setWindowFlags(mainWindow->windowFlags() | Qt::WindowStaysOnTopHint);
+        mainWindow->showWindow();
     }
 }
 
@@ -50,11 +54,8 @@ void AppControl::deleteMainWindows()
     }
 }
 
-void AppControl::showMainWindows()
+void AppControl::recreateMainWindows()
 {
-    MainWindow *mainWindow;
-    foreach(mainWindow, mainWindowsList)
-    {
-        mainWindow->showWindow();
-    }
+    deleteMainWindows();
+    createMainWindows();
 }

@@ -23,7 +23,7 @@ private:
     void installFonts();
     void createMainWindows();
     void deleteMainWindows();
-    void showMainWindows();
+    void recreateMainWindows();
 };
 
 #endif // APPCONTROL_H
