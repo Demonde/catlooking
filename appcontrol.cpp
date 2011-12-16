@@ -1,4 +1,3 @@
-#include <QtGui/QDesktopWidget>
 #include <QtGui/QApplication>
 #include <QDebug>
 #include "appcontrol.h"
@@ -6,10 +5,12 @@
 
 AppControl::AppControl(QObject *parent) :
     QObject(parent),
-    appModel(AppModel::getInstance())
+    appModel(AppModel::getInstance()),
+    desktopWidget(QApplication::desktop())
 {
     installFonts();
     createMainWindows();
+    handleScreenChange();
 }
 
 AppControl::~AppControl()
@@ -33,7 +34,6 @@ void AppControl::installFonts()
 
 void AppControl::createMainWindows()
 {
-    QDesktopWidget *desktopWidget = QApplication::desktop();
     int screenCount = desktopWidget->screenCount();
     for (int i = 0; i < screenCount; ++i)
     {
@@ -58,4 +58,10 @@ void AppControl::recreateMainWindows()
 {
     deleteMainWindows();
     createMainWindows();
+}
+
+void AppControl::handleScreenChange()
+{
+    connect(desktopWidget, SIGNAL(workAreaResized(int)),
+            this, SLOT(recreateMainWindows()));
 }

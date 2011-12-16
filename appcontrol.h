@@ -2,6 +2,7 @@
 #define APPCONTROL_H
 
 #include <QObject>
+#include <QtGui/QDesktopWidget>
 #include "mainwindow.h"
 #include "appmodel.h"
 
@@ -15,15 +16,19 @@ public:
 public slots:
     void receiveApplicationMessage(QString);
 
+private slots:
+    void recreateMainWindows();
+
 private:
     AppModel appModelStatic;
     AppModel *appModel;
     QList<MainWindow *> mainWindowsList;
+    QDesktopWidget *desktopWidget;
 
     void installFonts();
     void createMainWindows();
     void deleteMainWindows();
-    void recreateMainWindows();
+    void handleScreenChange();
 };
 
 #endif // APPCONTROL_H
