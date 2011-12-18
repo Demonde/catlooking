@@ -28,8 +28,8 @@ void AppControl::receiveApplicationMessage(QString message)
 
 void AppControl::installFonts()
 {
-    //    Utils::installFont(":/fonts/fonts/LiberationSans.ttf");
-    //    Utils::installFont(":/fonts/fonts/LiberationSerif.ttf");
+    Utils::installFont(":/fonts/resources/fonts/chinese.ttc");
+//    Utils::installFont(":/fonts/fonts/LiberationSerif.ttc");
 }
 
 void AppControl::createMainWindows()

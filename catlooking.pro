@@ -22,3 +22,7 @@ HEADERS  += \
 debug {
     DEFINES += DEBUG
 }
+
+RESOURCES += \
+    fonts.qrc
+
