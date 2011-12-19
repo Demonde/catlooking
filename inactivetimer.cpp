@@ -1,31 +1,42 @@
 #include "inactivetimer.h"
-#include <QTimer>
 
-float const InactiveTimer::inactivityTimerQtCorrection(1.005);
+int const InactiveTimer::totalTickerSteps(5);
 
 InactiveTimer::InactiveTimer(int msecInactivityTimeout, QObject *parent = 0) :
     QObject(parent),
     inactivityTimeout(msecInactivityTimeout),
-    lastActivityDateTime(QDateTime::currentDateTime())
+    ticker(new QTimer(this)),
+    currentTicker(0)
 {
+    ticker->setInterval(inactivityTimeout / totalTickerSteps);
+    connect(ticker, SIGNAL(timeout()), this, SLOT(tick()));
+}
+
+void InactiveTimer::startTicker()
+{
+    if (!ticker->isActive())
+    {
+        ticker->start();
+    }
 }
 
 void InactiveTimer::notifyActivity()
 {
-    lastActivityDateTime = QDateTime::currentDateTime();
-    startTimer();
+    clearTickerSteps();
+    startTicker();
 }
 
-void InactiveTimer::startTimer()
+void InactiveTimer::clearTickerSteps()
 {
-    QTimer::singleShot(static_cast<int>(inactivityTimeout * inactivityTimerQtCorrection),
-                       this, SLOT(checkInactivity()));
+    currentTicker = 0;
 }
 
-void InactiveTimer::checkInactivity()
+void InactiveTimer::tick()
 {
-    if (lastActivityDateTime.msecsTo(QDateTime::currentDateTime()) > inactivityTimeout)
+    ++currentTicker;
+    if (currentTicker > totalTickerSteps)
     {
         emit inactivityDetected();
+        ticker->stop();
     }
 }

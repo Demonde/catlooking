@@ -2,7 +2,7 @@
 #define INACTIVETIMER_H
 
 #include <QObject>
-#include <QDateTime>
+#include <QTimer>
 
 class InactiveTimer : public QObject
 {
@@ -12,18 +12,20 @@ public:
     void notifyActivity();
 
 public slots:
-    void startTimer();
+    void startTicker();
 
 signals:
     void inactivityDetected();
 
 private:
     int inactivityTimeout;
-    QDateTime lastActivityDateTime;
-    float static const inactivityTimerQtCorrection;
+    QTimer *ticker;
+    int currentTicker;
+    int static const totalTickerSteps;
+    void clearTickerSteps();
 
 private slots:
-    void checkInactivity();
+    void tick();
 
 };
 
