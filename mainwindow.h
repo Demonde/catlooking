@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QRegExp>
 #include "appmodel.h"
+#include "inactivetimer.h"
 
 class MainWindow : public QFrame
 {
@@ -19,14 +20,21 @@ public:
 public slots:
     void showWindow();
 
+protected:
+    void mouseMoveEvent(QMouseEvent  *);
+
 private slots:
     void onModelStateChanged(AppModel::ModelEvent);
+    void onInactivity();
 
 private:
     AppModel *appModel;
+    InactiveTimer *mouseInactiveTimer;
+    int static const inactivityTimeout;
     void setIconAndTitle();
     void integrateWithAppModel();
     void updateUi();
+    void onMouseMove();
 };
 
 #endif // MAINWINDOW_H

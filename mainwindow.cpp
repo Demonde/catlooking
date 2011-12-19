@@ -2,17 +2,29 @@
 #include <QDebug>
 #include "mainwindow.h"
 
+int const MainWindow::inactivityTimeout(1000);
+
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
-      appModel(AppModel::getInstance())
+      appModel(AppModel::getInstance()),
+      mouseInactiveTimer(new InactiveTimer(inactivityTimeout, this))
 {
     setIconAndTitle();
     showWindow();
     integrateWithAppModel();
+
+    setMouseTracking(true);
+    connect(mouseInactiveTimer, SIGNAL(inactivityDetected()), this, SLOT(onInactivity()));
 }
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent  *)
+{
+    mouseInactiveTimer->notifyActivity();
+    onMouseMove();
 }
 
 void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent)
@@ -51,4 +63,14 @@ void MainWindow::updateUi()
     {
         close();
     }
+}
+
+void MainWindow::onInactivity()
+{
+    qDebug() << "Inactivity!";
+}
+
+void MainWindow::onMouseMove()
+{
+    qDebug() << "Mouse moved!";
 }
