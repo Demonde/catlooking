@@ -10,6 +10,7 @@ class InactiveTimer : public QObject
 public:
     explicit InactiveTimer(int msecInactivityTimeout, QObject *parent);
     void notifyActivity();
+    bool isActionPresence();
 
 public slots:
     void startTicker();

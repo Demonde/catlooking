@@ -27,6 +27,8 @@ public:
     Q_DECLARE_FLAGS(UiStates, UiState)
 
     UiState getUiState();
+    void reportWidgetMouseActive();
+    void reportWdigetMouseInactive();
 
 public slots:
     void closeApplication();
@@ -35,8 +37,9 @@ signals:
     void modelWasUpdated(AppModel::ModelEvent);
 
 private:
-    static AppModel* instancePointer;
-    static UiState uiState;
+    AppModel static *instancePointer;
+    UiState static uiState;
+    int static activeWidgetCounter;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AppModel::UiStates)

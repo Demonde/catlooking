@@ -1,21 +1,24 @@
 #include <QShortcut>
 #include <QDebug>
-#include <QApplication>
 #include "mainwindow.h"
 
 int const MainWindow::inactivityTimeout(3000);
+int const MainWindow::managingWidgetWidth(600);
+int const MainWindow::managingWidgetHeight(60);
 
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
       appModel(AppModel::getInstance()),
-      mouseInactiveTimer(new InactiveTimer(inactivityTimeout, this))
+      mouseInactiveTimer(new InactiveTimer(inactivityTimeout, this)),
+      managingWidget(new ManagingWidget(this)),
+      managingWidgetAnimation(new QPropertyAnimation(managingWidget, "geometry")),
+      managingWidgetShownGeometry(QRect(0, 0, 0, 0)),
+      managingWidgetHiddenGeometry(QRect(0, 0, 0, 0))
 {
     setIconAndTitle();
     showWindow();
     integrateWithAppModel();
-
-    setMouseTracking(true);
-    connect(mouseInactiveTimer, SIGNAL(inactivityDetected()), this, SLOT(onInactivity()));
+    setupInactivityMonitor();
 }
 
 MainWindow::~MainWindow()
@@ -24,13 +27,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::mouseMoveEvent(QMouseEvent  *)
 {
-    mouseInactiveTimer->notifyActivity();
     onMouseMove();
 }
 
 void MainWindow::closeEvent (QCloseEvent  *)
 {
     appModel->closeApplication();
+}
+
+void MainWindow::resizeEvent(QResizeEvent *)
+{
+    setManagingWidgetInitialGeometry();
 }
 
 void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent)
@@ -72,12 +79,49 @@ void MainWindow::updateUi()
     }
 }
 
+void MainWindow::setupInactivityMonitor()
+{
+    setMouseTracking(true);
+    connect(mouseInactiveTimer, SIGNAL(inactivityDetected()), this, SLOT(onInactivity()));
+}
+
 void MainWindow::onInactivity()
 {
-    QApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
+    appModel->reportWdigetMouseInactive();
+    hideManagingWidget();
 }
 
 void MainWindow::onMouseMove()
 {
-    QApplication::restoreOverrideCursor();
+    if(!mouseInactiveTimer->isActionPresence())
+    {
+        appModel->reportWidgetMouseActive();
+        showManagingWidget();
+    }
+    mouseInactiveTimer->notifyActivity();
+}
+
+void MainWindow::setManagingWidgetInitialGeometry()
+{
+    int xPoint = (width() - managingWidgetWidth) / 2;
+    managingWidgetHiddenGeometry = QRect(xPoint, - managingWidgetHeight,
+                                      managingWidgetWidth, managingWidgetHeight);
+     managingWidgetShownGeometry = QRect(xPoint, 0,
+                                         managingWidgetWidth, managingWidgetHeight);
+    managingWidget->setGeometry(managingWidgetHiddenGeometry);
+//    managingWidget->show();
+//    managingWidget->raise();
+    setStyleSheet("ManagingWidget {border: 1px solid blue;} \n MainWindow {border: 1px solid red;}");
+}
+
+void MainWindow::showManagingWidget()
+{
+    managingWidgetAnimation->setEndValue(managingWidgetShownGeometry);
+    managingWidgetAnimation->start();
+}
+
+void MainWindow::hideManagingWidget()
+{
+    managingWidgetAnimation->setEndValue(managingWidgetHiddenGeometry);
+    managingWidgetAnimation->start();
 }

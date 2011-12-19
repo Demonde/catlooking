@@ -11,7 +11,8 @@ SOURCES += \
     utils.cpp\
     appcontrol.cpp \
     appmodel.cpp \
-    inactivetimer.cpp
+    inactivetimer.cpp \
+    managingwidget.cpp
 
 HEADERS  += \
         mainwindow.h\
@@ -19,7 +20,8 @@ HEADERS  += \
         utils.h\
         appcontrol.h \
         appmodel.h \
-        inactivetimer.h
+        inactivetimer.h \
+    managingwidget.h
 
 debug {
     DEFINES += DEBUG
@@ -27,6 +29,8 @@ debug {
 
 RESOURCES += \
     fonts.qrc
+
+
 
 
 

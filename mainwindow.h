@@ -3,11 +3,10 @@
 
 #include <QtGui/QFrame>
 #include <QSettings>
-#include <QSystemTrayIcon>
-#include <QDir>
-#include <QRegExp>
+#include <QPropertyAnimation>
 #include "appmodel.h"
 #include "inactivetimer.h"
+#include "managingwidget.h"
 
 class MainWindow : public QFrame
 {
@@ -23,6 +22,7 @@ public slots:
 protected:
     void mouseMoveEvent(QMouseEvent  *);
     void closeEvent (QCloseEvent  *);
+    void resizeEvent(QResizeEvent *);
 
 private slots:
     void onModelStateChanged(AppModel::ModelEvent);
@@ -31,11 +31,21 @@ private slots:
 private:
     AppModel *appModel;
     InactiveTimer *mouseInactiveTimer;
+    ManagingWidget *managingWidget;
+    QPropertyAnimation *managingWidgetAnimation;
+    QRect managingWidgetShownGeometry;
+    QRect managingWidgetHiddenGeometry;
     int static const inactivityTimeout;
+    int static const managingWidgetWidth;
+    int static const managingWidgetHeight;
     void setIconAndTitle();
     void integrateWithAppModel();
     void updateUi();
+    void setupInactivityMonitor();
     void onMouseMove();
+    void setManagingWidgetInitialGeometry();
+    void showManagingWidget();
+    void hideManagingWidget();
 };
 
 #endif // MAINWINDOW_H

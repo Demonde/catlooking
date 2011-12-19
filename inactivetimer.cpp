@@ -40,3 +40,8 @@ void InactiveTimer::tick()
         ticker->stop();
     }
 }
+
+bool InactiveTimer::isActionPresence()
+{
+    return ticker->isActive();
+}
