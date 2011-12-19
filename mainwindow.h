@@ -22,6 +22,7 @@ public slots:
 
 protected:
     void mouseMoveEvent(QMouseEvent  *);
+    void closeEvent (QCloseEvent  *);
 
 private slots:
     void onModelStateChanged(AppModel::ModelEvent);

@@ -40,8 +40,6 @@ void AppControl::createMainWindows()
         MainWindow *mainWindow = new MainWindow();
         mainWindowsList.append(mainWindow);
         mainWindow->setGeometry(desktopWidget->screenGeometry(i));
-        mainWindow->setWindowState(mainWindow->windowState() | Qt::WindowFullScreen);
-        mainWindow->setWindowFlags(mainWindow->windowFlags() | Qt::WindowStaysOnTopHint);
         mainWindow->showWindow();
     }
 }

@@ -28,6 +28,11 @@ void MainWindow::mouseMoveEvent(QMouseEvent  *)
     onMouseMove();
 }
 
+void MainWindow::closeEvent (QCloseEvent  *)
+{
+    appModel->closeApplication();
+}
+
 void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent)
 {
     if (AppModel::UiStateChanged == modelEvent)
@@ -50,6 +55,7 @@ void MainWindow::showWindow()
     showNormal();
     activateWindow();
     setWindowState(windowState() | Qt::WindowFullScreen);
+    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 }
 
 void MainWindow::setIconAndTitle()
