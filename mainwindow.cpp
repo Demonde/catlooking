@@ -1,8 +1,9 @@
 #include <QShortcut>
 #include <QDebug>
+#include <QApplication>
 #include "mainwindow.h"
 
-int const MainWindow::inactivityTimeout(1000);
+int const MainWindow::inactivityTimeout(3000);
 
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
@@ -67,10 +68,10 @@ void MainWindow::updateUi()
 
 void MainWindow::onInactivity()
 {
-    qDebug() << "Inactivity!";
+    QApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
 }
 
 void MainWindow::onMouseMove()
 {
-    qDebug() << "Mouse moved!";
+    QApplication::restoreOverrideCursor();
 }
