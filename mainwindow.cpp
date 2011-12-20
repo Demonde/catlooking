@@ -5,7 +5,7 @@
 
 int const MainWindow::inactivityTimeout(3000);
 int const MainWindow::managingWidgetWidth(600);
-int const MainWindow::managingWidgetHeight(60);
+int const MainWindow::managingWidgetHeight(90);
 
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
