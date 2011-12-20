@@ -38,6 +38,7 @@ private:
     int static const inactivityTimeout;
     int static const managingWidgetWidth;
     int static const managingWidgetHeight;
+    void setupStyleSheet();
     void setIconAndTitle();
     void integrateWithAppModel();
     void updateUi();

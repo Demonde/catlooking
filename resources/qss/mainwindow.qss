@@ -1,0 +1,9 @@
+ManagingWidget
+{
+	border: 1px solid blue;
+}
+
+MainWindow
+{
+	border: 1px solid red;
+}

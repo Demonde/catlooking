@@ -28,7 +28,13 @@ debug {
 }
 
 RESOURCES += \
-    fonts.qrc
+    fonts.qrc \
+    stylesheet.qrc
+
+OTHER_FILES += \
+    resources/qss/mainwindow.qss
+
+
 
 
 

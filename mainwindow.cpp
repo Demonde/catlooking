@@ -1,4 +1,5 @@
 #include <QShortcut>
+#include <QFile>
 #include <QDebug>
 #include "mainwindow.h"
 
@@ -19,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     showWindow();
     integrateWithAppModel();
     setupInactivityMonitor();
+    setupStyleSheet();
 }
 
 MainWindow::~MainWindow()
@@ -65,6 +67,13 @@ void MainWindow::showWindow()
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 }
 
+void MainWindow::setupStyleSheet()
+{
+    QFile qssFile(":/qss/resources/qss/mainwindow.qss");
+    qssFile.open(QFile::ReadOnly);
+    setStyleSheet(QLatin1String(qssFile.readAll()));
+}
+
 void MainWindow::setIconAndTitle()
 {
 //    QApplication::setWindowIcon(QIcon(":/images/images/catlookingwriter.png"));
@@ -109,9 +118,6 @@ void MainWindow::setManagingWidgetInitialGeometry()
      managingWidgetShownGeometry = QRect(xPoint, 0,
                                          managingWidgetWidth, managingWidgetHeight);
     managingWidget->setGeometry(managingWidgetHiddenGeometry);
-//    managingWidget->show();
-//    managingWidget->raise();
-    setStyleSheet("ManagingWidget {border: 1px solid blue;} \n MainWindow {border: 1px solid red;}");
 }
 
 void MainWindow::showManagingWidget()
