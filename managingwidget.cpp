@@ -33,6 +33,10 @@ void ManagingWidget::integrateWithAppModel()
 
 void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent)
 {
+    if (AppModel::TranslationChanged == modelEvent)
+    {
+        setTranslations();
+    }
 }
 
 void ManagingWidget::setupLayouts()

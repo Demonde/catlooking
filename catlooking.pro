@@ -12,7 +12,8 @@ SOURCES += \
     appcontrol.cpp \
     appmodel.cpp \
     inactivetimer.cpp \
-    managingwidget.cpp
+    managingwidget.cpp \
+    translator.cpp
 
 HEADERS  += \
         mainwindow.h\
@@ -21,7 +22,8 @@ HEADERS  += \
         appcontrol.h \
         appmodel.h \
         inactivetimer.h \
-    managingwidget.h
+    managingwidget.h \
+    translator.h
 
 debug {
     DEFINES += DEBUG
@@ -29,10 +31,14 @@ debug {
 
 RESOURCES += \
     fonts.qrc \
-    stylesheet.qrc
+    stylesheet.qrc \
+    translations.qrc
 
 OTHER_FILES += \
     resources/qss/mainwindow.qss
+
+
+
 
 
 

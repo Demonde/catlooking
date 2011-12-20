@@ -3,11 +3,12 @@
 #include "appmodel.h"
 
 AppModel* AppModel::instancePointer(0);
-AppModel::UiState AppModel::uiState(AppModel::OptionsState);
-int AppModel::activeWidgetCounter(0);
 
 AppModel::AppModel(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    uiState(AppModel::OptionsState),
+    activeWidgetCounter(0),
+    translator(new Translator(this))
 {
     QMutex creationMutex;
     creationMutex.lock();
@@ -50,4 +51,9 @@ void AppModel::reportWdigetMouseInactive()
         activeWidgetCounter = 0;
         QApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
     }
+}
+
+QString AppModel::getTranslation(QString elementId)
+{
+    return translator->getTranslation(elementId);
 }

@@ -2,6 +2,7 @@
 #define APPMODEL_H
 
 #include <QObject>
+#include "translator.h"
 
 class AppModel : public QObject
 {
@@ -13,7 +14,8 @@ public:
     // Flags
     enum ModelEvent
     {
-        UiStateChanged = 0x0
+        UiStateChanged = 0x0,
+        TranslationChanged = 0x1
     };
     Q_DECLARE_FLAGS(ModelEvents, ModelEvent)
 
@@ -29,6 +31,7 @@ public:
     UiState getUiState();
     void reportWidgetMouseActive();
     void reportWdigetMouseInactive();
+    QString getTranslation(QString elementId);
 
 public slots:
     void closeApplication();
@@ -38,8 +41,9 @@ signals:
 
 private:
     AppModel static *instancePointer;
-    UiState static uiState;
-    int static activeWidgetCounter;
+    UiState uiState;
+    int activeWidgetCounter;
+    Translator *translator;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AppModel::UiStates)
