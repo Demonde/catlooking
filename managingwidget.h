@@ -15,9 +15,13 @@ class ManagingWidget : public QFrame
 public:
     explicit ManagingWidget(QWidget *parent = 0);
     ~ManagingWidget();
+    void clearFocusFromTitleEdit();
 
 private slots:
     void onModelStateChanged(AppModel::ModelEvent);
+
+signals:
+    void managingWidgetActivityEvent();
 
 private:
     AppModel *appModel;

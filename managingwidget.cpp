@@ -16,6 +16,9 @@ ManagingWidget::ManagingWidget(QWidget *parent) :
 {
     setTranslations();
     setupLayouts();
+    connect(titleLineEdit, SIGNAL(cursorPositionChanged(int,int)),
+            this, SIGNAL(managingWidgetActivityEvent()));
+    connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
 }
 
 ManagingWidget::~ManagingWidget()
@@ -63,4 +66,9 @@ void ManagingWidget::setTranslations()
     helpButton->setText(appModel->getTranslation("ManagingWidgetHelp"));
     exitButton->setText(appModel->getTranslation("ManagingWidgetExit"));
     titleLabel->setText(appModel->getTranslation("ManagingWidgetTitle"));
+}
+
+void ManagingWidget::clearFocusFromTitleEdit()
+{
+    titleLineEdit->clearFocus();
 }

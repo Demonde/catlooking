@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "mainwindow.h"
 
-int const MainWindow::inactivityTimeout(3000);
+int const MainWindow::inactivityTimeout(5000);
 int const MainWindow::managingWidgetWidth(600);
 int const MainWindow::managingWidgetHeight(90);
 
@@ -32,7 +32,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent  *)
     onMouseMove();
 }
 
-void MainWindow::closeEvent (QCloseEvent  *)
+void MainWindow::closeEvent(QCloseEvent  *)
 {
     appModel->closeApplication();
 }
@@ -54,9 +54,6 @@ void MainWindow::integrateWithAppModel()
 {
     connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent)),
             this, SLOT(onModelStateChanged(AppModel::ModelEvent)));
-
-    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(shortcut, SIGNAL(activated()), appModel, SLOT(closeApplication()));
 }
 
 void MainWindow::showWindow()
@@ -92,6 +89,8 @@ void MainWindow::setupInactivityMonitor()
 {
     setMouseTracking(true);
     connect(mouseInactiveTimer, SIGNAL(inactivityDetected()), this, SLOT(onInactivity()));
+    connect(managingWidget, SIGNAL(managingWidgetActivityEvent()),
+            mouseInactiveTimer, SLOT(notifyActivity()));
 }
 
 void MainWindow::onInactivity()
@@ -128,6 +127,7 @@ void MainWindow::showManagingWidget()
 
 void MainWindow::hideManagingWidget()
 {
+    managingWidget->clearFocusFromTitleEdit();
     managingWidgetAnimation->setEndValue(managingWidgetHiddenGeometry);
     managingWidgetAnimation->start();
 }
