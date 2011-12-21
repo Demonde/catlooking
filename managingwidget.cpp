@@ -57,10 +57,10 @@ void ManagingWidget::setupLayouts()
 
 void ManagingWidget::setTranslations()
 {
-    dayThemeButton->setText("day");
-    nightThemeButton->setText("night");
-    exportButton->setText("export");
-    helpButton->setText("help");
-    exitButton->setText("exit");
-    titleLabel->setText("Title");
+    dayThemeButton->setText(appModel->getTranslation("ManagingWidgetDay"));
+    nightThemeButton->setText(appModel->getTranslation("ManagingWidgetNight"));
+    exportButton->setText(appModel->getTranslation("ManagingWidgetExport"));
+    helpButton->setText(appModel->getTranslation("ManagingWidgetHelp"));
+    exitButton->setText(appModel->getTranslation("ManagingWidgetExit"));
+    titleLabel->setText(appModel->getTranslation("ManagingWidgetTitle"));
 }

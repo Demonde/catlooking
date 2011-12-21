@@ -1,11 +1,13 @@
 #include <QDebug>
 #include <QFile>
+#include <QDomDocument>
+#include <QDomElement>
 #include "translator.h"
 
 Translator::Translator(QObject *parent) :
     QObject(parent),
     currentLocale(QLocale::system()),
-    defaultLocale(QLocale(QLocale::English, QLocale::AnyCountry))
+    defaultLocale(QLocale(QLocale::English, QLocale::UnitedStates))
 {
     if(translationExists(currentLocale))
     {
@@ -80,4 +82,34 @@ QString Translator::getFileNameGeneralTranslation(QLocale locale)
 
 void Translator::loadTranslation(QLocale locale)
 {
+    QFile xmlFile;
+    xmlFile.setFileName(getTranslationFileName(locale));
+    if (xmlFile.open(QIODevice::ReadOnly))
+    {
+        QDomDocument domDocument;
+        QString errorStr;
+        int errorLine;
+        int errorColumn;
+        if (!domDocument.setContent(&xmlFile, true, &errorStr, &errorLine,
+                             &errorColumn)) {
+            qWarning() << "Error of translation xml file"
+                    << getTranslationFileName(locale) << errorLine << errorColumn << errorStr;
+        }
+        QDomElement root = domDocument.documentElement();
+        if (root.tagName() != "translation") {
+            qWarning() << "Root element is not <translation>";
+        }
+        // Reading the translations
+        QDomElement child = root.firstChildElement();
+        while (!child.isNull()) {
+            if ((child.tagName() == "item")
+                    && (child.hasAttribute("id"))
+                    && (!child.attribute("id").isEmpty()))
+            {
+                translationMap.insert(child.attribute("id"), child.text());
+            }
+            child = child.nextSiblingElement();
+        }
+    }
 }
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE catlookingTranslation>
+<translation version="0.1">
+    <item id="ManagingWidgetDay">jours</item>
+    <item id="ManagingWidgetNight">la nuit</item>
+    <item id="ManagingWidgetExport">exportation</item>
+    <item id="ManagingWidgetHelp">aide</item>
+    <item id="ManagingWidgetExit">sortie</item>
+    <item id="ManagingWidgetTitle">titre:</item>
+</translation>

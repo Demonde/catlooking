@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui network xml
 
 TARGET = catlooking
 TEMPLATE = app
