@@ -58,7 +58,7 @@ void MainWindow::integrateWithAppModel()
 
 void MainWindow::showWindow()
 {
-    showNormal();
+    show();
     activateWindow();
     setWindowState(windowState() | Qt::WindowFullScreen);
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
