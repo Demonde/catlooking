@@ -16,6 +16,7 @@ ManagingWidget::ManagingWidget(QWidget *parent) :
 {
     setTranslations();
     setupLayouts();
+    integrateWithAppModel();
     connect(titleLineEdit, SIGNAL(cursorPositionChanged(int,int)),
             this, SIGNAL(managingWidgetActivityEvent()));
     connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
