@@ -1,4 +1,5 @@
-ManagingWidget
+ManagingWidget,
+NoteListWidget
 {
 	border: 1px solid blue;
 }

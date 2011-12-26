@@ -13,7 +13,8 @@ SOURCES += \
     appmodel.cpp \
     inactivetimer.cpp \
     managingwidget.cpp \
-    translator.cpp
+    translator.cpp \
+    notelistwidget.cpp
 
 HEADERS  += \
         mainwindow.h\
@@ -23,7 +24,8 @@ HEADERS  += \
         appmodel.h \
         inactivetimer.h \
     managingwidget.h \
-    translator.h
+    translator.h \
+    notelistwidget.h
 
 debug {
     DEFINES += DEBUG
@@ -36,6 +38,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     resources/qss/mainwindow.qss
+
+
 
 
 
