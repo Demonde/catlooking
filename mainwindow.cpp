@@ -154,12 +154,14 @@ void MainWindow::setNoteListWidgetInitialGeometry()
 
 void MainWindow::showNoteListWidget()
 {
+    noteListWidgetAnimation->stop();
     noteListWidgetAnimation->setEndValue(noteListWidgetShownGeometry);
     noteListWidgetAnimation->start();
 }
 
 void MainWindow::hideNoteListWidget()
 {
+    noteListWidgetAnimation->stop();
     noteListWidgetAnimation->setEndValue(noteListWidgetHiddenGeometry);
     noteListWidgetAnimation->start();
 
