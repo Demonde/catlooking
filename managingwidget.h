@@ -3,10 +3,7 @@
 
 #include <QFrame>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QPushButton>
-#include <QLabel>
-#include <QLineEdit>
 #include "appmodel.h"
 
 class ManagingWidget : public QFrame
@@ -27,11 +24,7 @@ private:
     QPushButton *exportButton;
     QPushButton *helpButton;
     QPushButton *exitButton;
-    QLabel *titleLabel;
-    QLineEdit *titleLineEdit;
-    QVBoxLayout *mainLayout;
-    QHBoxLayout *topButtonsLayout;
-    QHBoxLayout *titleLayout;
+    QHBoxLayout *mainLayout;
     void setTranslations();
     void setupLayouts();
 };

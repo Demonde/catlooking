@@ -8,12 +8,9 @@ ManagingWidget::ManagingWidget(QWidget *parent) :
     exportButton(new QPushButton(this)),
     helpButton(new QPushButton(this)),
     exitButton(new QPushButton(this)),
-    titleLabel(new QLabel(this)),
-    titleLineEdit(new QLineEdit(this)),
-    mainLayout(new QVBoxLayout()),
-    topButtonsLayout(new QHBoxLayout()),
-    titleLayout(new QHBoxLayout())
+    mainLayout(new QHBoxLayout())
 {
+    integrateWithAppModel();
     setTranslations();
     setupLayouts();
 }
@@ -21,14 +18,13 @@ ManagingWidget::ManagingWidget(QWidget *parent) :
 ManagingWidget::~ManagingWidget()
 {
     delete mainLayout;
-    delete topButtonsLayout;
-    delete titleLayout;
 }
 
 void ManagingWidget::integrateWithAppModel()
 {
     connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent)),
             this, SLOT(onModelStateChanged(AppModel::ModelEvent)));
+    connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
 }
 
 void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent)
@@ -41,17 +37,12 @@ void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent)
 
 void ManagingWidget::setupLayouts()
 {
-    topButtonsLayout->addWidget(dayThemeButton);
-    topButtonsLayout->addWidget(nightThemeButton);
-    topButtonsLayout->addWidget(exportButton);
-    topButtonsLayout->addWidget(helpButton);
-    topButtonsLayout->addWidget(exitButton);
+    mainLayout->addWidget(dayThemeButton);
+    mainLayout->addWidget(nightThemeButton);
+    mainLayout->addWidget(exportButton);
+    mainLayout->addWidget(helpButton);
+    mainLayout->addWidget(exitButton);
 
-    titleLayout->addWidget(titleLabel);
-    titleLayout->addWidget(titleLineEdit);
-
-    mainLayout->addLayout(topButtonsLayout);
-    mainLayout->addLayout(titleLayout);
     setLayout(mainLayout);
 }
 
@@ -62,5 +53,4 @@ void ManagingWidget::setTranslations()
     exportButton->setText(appModel->getTranslation("ManagingWidgetExport"));
     helpButton->setText(appModel->getTranslation("ManagingWidgetHelp"));
     exitButton->setText(appModel->getTranslation("ManagingWidgetExit"));
-    titleLabel->setText(appModel->getTranslation("ManagingWidgetTitle"));
 }
