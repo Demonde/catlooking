@@ -16,7 +16,8 @@ SOURCES += \
     translator.cpp \
     notelistwidget.cpp \
     notestate.cpp \
-    note.cpp
+    note.cpp \
+    notewidget.cpp
 
 HEADERS  += \
         mainwindow.h\
@@ -29,7 +30,8 @@ HEADERS  += \
     translator.h \
     notelistwidget.h \
     notestate.h \
-    note.h
+    note.h \
+    notewidget.h
 
 debug {
     DEFINES += DEBUG
@@ -42,6 +44,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     resources/qss/mainwindow.qss
+
+
 
 
 

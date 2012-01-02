@@ -9,8 +9,14 @@ void Note::appendNoteState(QDateTime timeStamp, QString text, QString title, int
     noteStateList.append(NoteState(timeStamp, text, title, cursorPosition));
 }
 
-QString Note::getLastText()
+QString Note::getText()
 {
     qSort(noteStateList);
     return noteStateList.last().getText();
+}
+
+QString Note::getTitle()
+{
+    qSort(noteStateList);
+    return noteStateList.last().getTitle();
 }

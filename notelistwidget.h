@@ -2,7 +2,9 @@
 #define NOTELISTWIDGET_H
 
 #include <QFrame>
+#include <QList>
 #include "appmodel.h"
+#include "notewidget.h"
 
 class NoteListWidget : public QFrame
 {
@@ -19,7 +21,9 @@ signals:
 private:
     AppModel *appModel;
     void integrateWithAppModel();
-
+    QList< NoteWidget* > noteWidgetList;
+    void deleteAllNoteWidgets();
+    void createNoteWidgets();
 };
 
 #endif // NOTELISTWIDGET_H

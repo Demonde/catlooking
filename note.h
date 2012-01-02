@@ -8,7 +8,8 @@ class Note
 public:
     Note();
     void appendNoteState(QDateTime timeStamp, QString text, QString title, int cursorPosition);
-    QString getLastText();
+    QString getText();
+    QString getTitle();
 private:
     QList<NoteState> noteStateList;
 };

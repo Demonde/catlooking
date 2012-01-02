@@ -57,3 +57,45 @@ QString AppModel::getTranslation(QString elementId)
 {
     return translator->getTranslation(elementId);
 }
+
+void AppModel::importNotes()
+{
+    // debug
+    Note* note = new Note();
+    note->appendNoteState(QDateTime::currentDateTime(), "Hello", "Moto", 0);
+    noteList.append(note);
+    note = new Note();
+    note->appendNoteState(QDateTime::currentDateTime(), "Second note", "Yes it is", 2);
+    noteList.append(note);
+    // end debug
+    emit modelWasUpdated(DataChanged);
+}
+
+int AppModel::getNoteCount()
+{
+    return noteList.count();
+}
+
+QString AppModel::getNoteText(int noteIndex)
+{
+    if (noteIndex < noteList.count())
+    {
+        return noteList.at(noteIndex)->getText();
+    }
+    else
+    {
+        return QString();
+    }
+}
+
+QString AppModel::getNoteTitle(int noteIndex)
+{
+    if (noteIndex < noteList.count())
+    {
+        return noteList.at(noteIndex)->getTitle();
+    }
+    else
+    {
+        return QString();
+    }
+}

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "translator.h"
+#include "note.h"
 
 class AppModel : public QObject
 {
@@ -15,7 +16,8 @@ public:
     enum ModelEvent
     {
         UiStateChanged = 0x0,
-        TranslationChanged = 0x1
+        TranslationChanged = 0x1,
+        DataChanged=0x2
     };
     Q_DECLARE_FLAGS(ModelEvents, ModelEvent)
 
@@ -32,9 +34,13 @@ public:
     void reportWidgetMouseActive();
     void reportWdigetMouseInactive();
     QString getTranslation(QString elementId);
+    int getNoteCount();
+    QString getNoteText(int noteIndex);
+    QString getNoteTitle(int noteIndex);
 
 public slots:
     void closeApplication();
+    void importNotes();
 
 signals:
     void modelWasUpdated(AppModel::ModelEvent);
@@ -44,6 +50,7 @@ private:
     UiState uiState;
     int activeWidgetCounter;
     Translator *translator;
+    QList< Note* > noteList;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AppModel::UiStates)
