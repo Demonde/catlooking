@@ -27,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     integrateWithAppModel();
     setupInactivityMonitor();
     setupStyleSheet();
+    // debug
+    QShortcut *shortCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_N), this);
+    connect(shortCut, SIGNAL(activated()), appModel, SLOT(importNotes()));
 }
 
 MainWindow::~MainWindow()

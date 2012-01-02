@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QList>
+#include <QScrollBar>
 #include "appmodel.h"
 #include "notewidget.h"
 
@@ -20,6 +21,7 @@ signals:
 
 private:
     AppModel *appModel;
+    QScrollBar *scrollBar;
     void integrateWithAppModel();
     QList< NoteWidget* > noteWidgetList;
     void deleteAllNoteWidgets();

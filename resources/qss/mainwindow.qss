@@ -4,7 +4,8 @@ NoteListWidget
 	border: 1px solid blue;
 }
 
-MainWindow
+MainWindow,
+NoteWidget
 {
 	border: 1px solid red;
 }

@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QMutex>
 #include "appmodel.h"
+#include <QDebug>
 
 AppModel* AppModel::instancePointer(0);
 
@@ -67,6 +68,22 @@ void AppModel::importNotes()
     note = new Note();
     note->appendNoteState(QDateTime::currentDateTime(), "Second note", "Yes it is", 2);
     noteList.append(note);
+    note = new Note();
+    note->appendNoteState(QDateTime::currentDateTime(), "3 note", "Yes it is", 2);
+    noteList.append(note);
+    note = new Note();
+    note->appendNoteState(QDateTime::currentDateTime(), "4 note", "Yes it is", 2);
+    noteList.append(note);
+    note = new Note();
+    note->appendNoteState(QDateTime::currentDateTime(), "5 note", "Yes it is", 2);
+    noteList.append(note);
+    note = new Note();
+    note->appendNoteState(QDateTime::currentDateTime(), "6 note", "Yes it is", 2);
+    noteList.append(note);
+    note = new Note();
+    note->appendNoteState(QDateTime::currentDateTime(), "7 note", "Yes it is", 2);
+    noteList.append(note);
+    qDebug() << "Notes were imported";
     // end debug
     emit modelWasUpdated(DataChanged);
 }

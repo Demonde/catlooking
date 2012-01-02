@@ -2,7 +2,8 @@
 
 NoteListWidget::NoteListWidget(QWidget *parent) :
     QFrame(parent),
-    appModel(AppModel::getInstance())
+    appModel(AppModel::getInstance()),
+    scrollBar(new QScrollBar(Qt::Vertical, this))
 {
     integrateWithAppModel();
 }
@@ -39,6 +40,8 @@ void NoteListWidget::createNoteWidgets()
         NoteWidget* noteWidget = new NoteWidget(appModel->getNoteTitle(i),
                                                 appModel->getNoteTitle(i),
                                                 this);
+        noteWidget->setGeometry(10, 10 + i * 80, 300, 76);
+        noteWidget->show();
         noteWidgetList.append(noteWidget);
     }
 }
