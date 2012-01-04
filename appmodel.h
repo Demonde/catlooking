@@ -37,13 +37,14 @@ public slots:
     void closeApplication();
 
 signals:
-    void modelWasUpdated(AppModel::ModelEvent);
+    void modelWasUpdated(AppModel::ModelEvent, const void *);
 
 private:
     AppModel static *instancePointer;
     UiState uiState;
     int activeWidgetCounter;
     Translator *translator;
+    static const void *NullPointer;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AppModel::UiStates)

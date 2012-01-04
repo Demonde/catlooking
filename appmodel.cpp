@@ -3,6 +3,7 @@
 #include "appmodel.h"
 
 AppModel* AppModel::instancePointer(0);
+const void *AppModel::NullPointer(0);
 
 AppModel::AppModel(QObject *parent) :
     QObject(parent),
@@ -26,7 +27,7 @@ AppModel* AppModel::getInstance()
 void AppModel::closeApplication()
 {
     uiState = AppModel::CloseState;
-    emit modelWasUpdated(UiStateChanged);
+    emit modelWasUpdated(UiStateChanged, NullPointer);
 }
 
 AppModel::UiState AppModel::getUiState()

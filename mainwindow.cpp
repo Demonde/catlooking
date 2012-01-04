@@ -42,7 +42,7 @@ void MainWindow::resizeEvent(QResizeEvent *)
     setManagingWidgetInitialGeometry();
 }
 
-void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent)
+void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent, const void * /*dataPointer*/)
 {
     if (AppModel::UiStateChanged == modelEvent)
     {
@@ -52,8 +52,8 @@ void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent)
 
 void MainWindow::integrateWithAppModel()
 {
-    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent)),
-            this, SLOT(onModelStateChanged(AppModel::ModelEvent)));
+    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, const void *)),
+            this, SLOT(onModelStateChanged(AppModel::ModelEvent, const void *)));
 
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
     connect(shortcut, SIGNAL(activated()), appModel, SLOT(closeApplication()));

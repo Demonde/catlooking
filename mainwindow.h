@@ -25,7 +25,7 @@ protected:
     void resizeEvent(QResizeEvent *);
 
 private slots:
-    void onModelStateChanged(AppModel::ModelEvent);
+    void onModelStateChanged(AppModel::ModelEvent, const void *);
     void onInactivity();
 
 private:
