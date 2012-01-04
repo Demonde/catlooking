@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QMouseEvent>
 #include "appmodel.h"
 
 class ManagingWidget : public QFrame
@@ -12,6 +13,13 @@ class ManagingWidget : public QFrame
 public:
     explicit ManagingWidget(QWidget *parent = 0);
     ~ManagingWidget();
+    void reportOnMouseGoingInWidget();
+
+protected:
+    void mouseMoveEvent(QMouseEvent *event);
+
+signals:
+    void mouseInsideManagingWidget();
 
 private slots:
     void onModelStateChanged(AppModel::ModelEvent);
@@ -27,6 +35,7 @@ private:
     QHBoxLayout *mainLayout;
     void setTranslations();
     void setupLayouts();
+    bool reportOnMouseGoingIn;
 };
 
 #endif // MANAGINGWIDGET_H

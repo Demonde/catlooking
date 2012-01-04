@@ -14,6 +14,7 @@ public:
 
 public slots:
     void startTicker();
+    void pauseTicker();
 
 signals:
     void inactivityDetected();

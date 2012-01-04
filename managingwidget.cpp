@@ -8,11 +8,13 @@ ManagingWidget::ManagingWidget(QWidget *parent) :
     exportButton(new QPushButton(this)),
     helpButton(new QPushButton(this)),
     exitButton(new QPushButton(this)),
-    mainLayout(new QHBoxLayout())
+    mainLayout(new QHBoxLayout()),
+    reportOnMouseGoingIn(true)
 {
     integrateWithAppModel();
     setTranslations();
     setupLayouts();
+    setMouseTracking(true);
 }
 
 ManagingWidget::~ManagingWidget()
@@ -25,6 +27,16 @@ void ManagingWidget::integrateWithAppModel()
     connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent)),
             this, SLOT(onModelStateChanged(AppModel::ModelEvent)));
     connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
+}
+
+
+void ManagingWidget::mouseMoveEvent(QMouseEvent */*event*/)
+{
+    if(reportOnMouseGoingIn)
+    {
+        emit mouseInsideManagingWidget();
+        reportOnMouseGoingIn = false;
+    }
 }
 
 void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent)
@@ -53,4 +65,9 @@ void ManagingWidget::setTranslations()
     exportButton->setText(appModel->getTranslation("ManagingWidgetExport"));
     helpButton->setText(appModel->getTranslation("ManagingWidgetHelp"));
     exitButton->setText(appModel->getTranslation("ManagingWidgetExit"));
+}
+
+void ManagingWidget::reportOnMouseGoingInWidget()
+{
+    reportOnMouseGoingIn = true;
 }

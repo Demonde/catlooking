@@ -45,3 +45,8 @@ bool InactiveTimer::isActionPresence()
 {
     return ticker->isActive();
 }
+
+void InactiveTimer::pauseTicker()
+{
+    ticker->stop();
+}

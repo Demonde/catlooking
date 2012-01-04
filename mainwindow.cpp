@@ -92,6 +92,8 @@ void MainWindow::setupInactivityMonitor()
 {
     setMouseTracking(true);
     connect(mouseInactiveTimer, SIGNAL(inactivityDetected()), this, SLOT(onInactivity()));
+    connect(managingWidget, SIGNAL(mouseInsideManagingWidget()),
+            mouseInactiveTimer, SLOT(pauseTicker()));
 }
 
 void MainWindow::onInactivity()
@@ -102,6 +104,7 @@ void MainWindow::onInactivity()
 
 void MainWindow::onMouseMove()
 {
+    managingWidget->reportOnMouseGoingInWidget();
     if(!mouseInactiveTimer->isActionPresence())
     {
         appModel->reportWidgetMouseActive();
