@@ -7,6 +7,7 @@
 #include "appmodel.h"
 #include "inactivetimer.h"
 #include "managingwidget.h"
+#include "noteeditwidget.h"
 
 class MainWindow : public QFrame
 {
@@ -20,13 +21,13 @@ public slots:
     void showWindow();
 
 protected:
-    void mouseMoveEvent(QMouseEvent  *);
     void closeEvent (QCloseEvent  *);
     void resizeEvent(QResizeEvent *);
 
 private slots:
     void onModelStateChanged(AppModel::ModelEvent, const void *);
     void onInactivity();
+    void checkMouseMovement();
 
 private:
     AppModel *appModel;
@@ -47,6 +48,10 @@ private:
     void setManagingWidgetInitialGeometry();
     void showManagingWidget();
     void hideManagingWidget();
+    NoteEditWidget *noteEditWidget;
+    QTimer *mouseMoveTimer;
+    QPoint oldMousePosition;
+    int static const mouseMoveCheckingTimer;
 };
 
 #endif // MAINWINDOW_H

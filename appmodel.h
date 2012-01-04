@@ -15,7 +15,8 @@ public:
     enum ModelEvent
     {
         UiStateChanged = 0x0,
-        TranslationChanged = 0x1
+        TranslationChanged = 0x1,
+        NoteChanged = 0x2
     };
     Q_DECLARE_FLAGS(ModelEvents, ModelEvent)
 

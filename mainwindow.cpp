@@ -6,6 +6,7 @@
 int const MainWindow::inactivityTimeout(3000);
 int const MainWindow::managingWidgetWidth(600);
 int const MainWindow::managingWidgetHeight(50);
+int const MainWindow::mouseMoveCheckingTimer(500);
 
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
@@ -14,22 +15,21 @@ MainWindow::MainWindow(QWidget *parent)
       managingWidget(new ManagingWidget(this)),
       managingWidgetAnimation(new QPropertyAnimation(managingWidget, "geometry")),
       managingWidgetShownGeometry(QRect(0, 0, 0, 0)),
-      managingWidgetHiddenGeometry(QRect(0, 0, 0, 0))
+      managingWidgetHiddenGeometry(QRect(0, 0, 0, 0)),
+      noteEditWidget(new NoteEditWidget(this)),
+      mouseMoveTimer(new QTimer(this)),
+      oldMousePosition(QCursor::pos())
 {
     setIconAndTitle();
     showWindow();
     integrateWithAppModel();
     setupInactivityMonitor();
     setupStyleSheet();
+    managingWidget->raise();
 }
 
 MainWindow::~MainWindow()
 {
-}
-
-void MainWindow::mouseMoveEvent(QMouseEvent  *)
-{
-    onMouseMove();
 }
 
 void MainWindow::closeEvent (QCloseEvent  *)
@@ -40,6 +40,7 @@ void MainWindow::closeEvent (QCloseEvent  *)
 void MainWindow::resizeEvent(QResizeEvent *)
 {
     setManagingWidgetInitialGeometry();
+    noteEditWidget->setGeometry(0, 0, width(), height());
 }
 
 void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent, const void * /*dataPointer*/)
@@ -54,9 +55,6 @@ void MainWindow::integrateWithAppModel()
 {
     connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, const void *)),
             this, SLOT(onModelStateChanged(AppModel::ModelEvent, const void *)));
-
-    QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(shortcut, SIGNAL(activated()), appModel, SLOT(closeApplication()));
 }
 
 void MainWindow::showWindow()
@@ -90,10 +88,13 @@ void MainWindow::updateUi()
 
 void MainWindow::setupInactivityMonitor()
 {
-    setMouseTracking(true);
     connect(mouseInactiveTimer, SIGNAL(inactivityDetected()), this, SLOT(onInactivity()));
     connect(managingWidget, SIGNAL(mouseInsideManagingWidget()),
             mouseInactiveTimer, SLOT(pauseTicker()));
+
+    mouseMoveTimer->setInterval(mouseMoveCheckingTimer);
+    mouseMoveTimer->start();
+    connect(mouseMoveTimer, SIGNAL(timeout()), this, SLOT(checkMouseMovement()));
 }
 
 void MainWindow::onInactivity()
@@ -133,4 +134,16 @@ void MainWindow::hideManagingWidget()
 {
     managingWidgetAnimation->setEndValue(managingWidgetHiddenGeometry);
     managingWidgetAnimation->start();
+}
+
+void MainWindow::checkMouseMovement()
+{
+    if(QCursor::pos() != oldMousePosition)
+    {
+        oldMousePosition = QCursor::pos();
+        if(geometry().contains(QCursor::pos()))
+        {
+            onMouseMove();
+        }
+    }
 }

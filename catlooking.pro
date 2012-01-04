@@ -14,7 +14,7 @@ SOURCES += \
     inactivetimer.cpp \
     managingwidget.cpp \
     translator.cpp \
-    noteedit.cpp
+    noteeditwidget.cpp
 
 HEADERS  += \
         mainwindow.h\
@@ -25,7 +25,7 @@ HEADERS  += \
         inactivetimer.h \
     managingwidget.h \
     translator.h \
-    noteedit.h
+    noteeditwidget.h
 
 debug {
     DEFINES += DEBUG
