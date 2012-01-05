@@ -8,7 +8,6 @@ SOURCES += \
     main.cpp\
     mainwindow.cpp\
     singleapplication.cpp\
-    utils.cpp\
     appcontrol.cpp \
     appmodel.cpp \
     inactivetimer.cpp \
@@ -17,12 +16,11 @@ SOURCES += \
     noteeditwidget.cpp
 
 HEADERS  += \
-        mainwindow.h\
-        singleapplication.h\
-        utils.h\
-        appcontrol.h \
-        appmodel.h \
-        inactivetimer.h \
+    mainwindow.h\
+    singleapplication.h\
+    appcontrol.h \
+    appmodel.h \
+    inactivetimer.h \
     managingwidget.h \
     translator.h \
     noteeditwidget.h
@@ -32,7 +30,6 @@ debug {
 }
 
 RESOURCES += \
-    fonts.qrc \
     stylesheet.qrc \
     translations.qrc
 

@@ -13,3 +13,7 @@ COPY %qt_dir%\bin\QtXml4.dll build\windows
 COPY %qt_dir%\bin\QtNetwork4.dll build\windows
 IF NOT EXIST build\windows\imageformats MKDIR build\windows\imageformats
 COPY %qt_dir%\plugins\imageformats\qjpeg4.dll build\windows\imageformats
+rem Copy resources to install dir
+IF NOT EXIST resources\fonts MKDIR build\windows\fonts
+COPY resources\fonts\chinese.ttc build\windows\fonts
+COPY resources\fonts\designosaur-italic.ttf build\windows\fonts

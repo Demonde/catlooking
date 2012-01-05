@@ -18,8 +18,8 @@ void NoteEditWidget::integrateWithAppModel()
 
 void NoteEditWidget::resizeEvent(QResizeEvent *)
 {
-    plainTextEdit->setGeometry(200, 100, width() - 400, height() - 200);
     visualCover->setGeometry(0, 0, width(), height());
+    plainTextEdit->setGeometry(200, 100, width() - 400, height() - 200);
 }
 
 void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent, const void * /*dataPointer*/)

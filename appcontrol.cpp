@@ -1,7 +1,8 @@
 #include <QtGui/QApplication>
+#include <QFontDatabase>
 #include <QDebug>
+#include <QFile> //debug
 #include "appcontrol.h"
-#include "utils.h"
 
 AppControl::AppControl(QObject *parent) :
     QObject(parent),
@@ -28,8 +29,9 @@ void AppControl::receiveApplicationMessage(QString message)
 
 void AppControl::installFonts()
 {
-    Utils::installFont(":/fonts/resources/fonts/chinese.ttc");
-//    Utils::installFont(":/fonts/fonts/LiberationSerif.ttc");
+    int result1 = QFontDatabase::addApplicationFont("./fonts/chinese.ttc");
+    int result2 = QFontDatabase::addApplicationFont("./fonts/designosaur-italic.ttf");
+    qDebug() << "Result1 =" << result1 << "Result2 =" << result2;
 }
 
 void AppControl::createMainWindows()
