@@ -2,7 +2,7 @@
 #define NOTEEDITWIDGET_H
 
 #include <QFrame>
-#include <QPlainTextEdit>
+#include <QTextEdit>
 #include "appmodel.h"
 
 class NoteEditWidget : public QFrame
@@ -20,7 +20,7 @@ private slots:
 private:
     AppModel *appModel;
     void integrateWithAppModel();
-    QPlainTextEdit *plainTextEdit;
+    QTextEdit *textEdit;
     QFrame* visualCover;
     void setupVisualCover();
 };

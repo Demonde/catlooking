@@ -1,9 +1,10 @@
 #include "noteeditwidget.h"
+#include <QFile> // debug
 
 NoteEditWidget::NoteEditWidget(QWidget *parent) :
     QFrame(parent),
     appModel(AppModel::getInstance()),
-    plainTextEdit(new QPlainTextEdit(this)),
+    textEdit(new QTextEdit(this)),
     visualCover(new QFrame(this))
 {
     integrateWithAppModel();
@@ -19,7 +20,13 @@ void NoteEditWidget::integrateWithAppModel()
 void NoteEditWidget::resizeEvent(QResizeEvent *)
 {
     visualCover->setGeometry(0, 0, width(), height());
-    plainTextEdit->setGeometry(200, 100, width() - 400, height() - 200);
+    textEdit->setGeometry(200, 100, width() - 400, height() - 200);
+    // debug
+    QFile htmlFile("/home/sychev/base/catlooking-build/text.html");
+    if (htmlFile.open(QIODevice::ReadOnly))
+    {
+        textEdit->setHtml(htmlFile.readAll());
+    }
 }
 
 void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent, const void * /*dataPointer*/)

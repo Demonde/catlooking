@@ -12,3 +12,8 @@ NoteEditWidget
 {
     background-color: rgba(0, 0, 0, 20%);
 }
+
+QTextEdit
+{
+    background-color: rgba(0, 0, 0, 0%);
+}
