@@ -35,15 +35,3 @@ RESOURCES += \
 
 OTHER_FILES += \
     resources/qss/mainwindow.qss
-
-
-
-
-
-
-
-
-
-
-
-
