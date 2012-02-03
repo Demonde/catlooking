@@ -1,14 +1,16 @@
 #ifndef NOTEMODELINFO_H
 #define NOTEMODELINFO_H
+
+#include <QTextCursor>
 #include "modelinfo.h"
 
 class NoteModelInfo : public ModelInfo
 {
 public:
-    NoteModelInfo() : text(""), textCursorPosition(0) {}
+    NoteModelInfo() {}
     virtual ~NoteModelInfo() {}
     QString text;
-    int textCursorPosition;
+    QTextCursor textCursor;
 };
 
 #endif // NOTEMODELINFO_H

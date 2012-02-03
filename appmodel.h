@@ -17,7 +17,8 @@ public:
     {
         UiStateChanged = 0x0,
         TranslationChanged = 0x1,
-        NoteChanged = 0x2
+        NoteChanged = 0x2,
+        CursorChanged = 0x3
     };
     Q_DECLARE_FLAGS(ModelEvents, ModelEvent)
 
@@ -34,20 +35,21 @@ public:
     void reportWidgetMouseActive();
     void reportWdigetMouseInactive();
     QString getTranslation(QString elementId);
-    void reportNoteWasChanged(QString newNoteText, int newTextCursorPosition);
+    void reportNoteState(QString newNoteText);
+    void reportSelectionState(QTextCursor newTextCursor);
 
 public slots:
     void closeApplication();
 
 signals:
-    void modelWasUpdated(AppModel::ModelEvent, const ModelInfo *);
+    void modelWasUpdated(AppModel::ModelEvent, ModelInfo *);
 
 private:
     AppModel static *instancePointer;
     UiState uiState;
     int activeWidgetCounter;
     Translator *translator;
-    static const ModelInfo *NullPointer;
+    static ModelInfo *NullPointer;
 //    QString noteText;
     NoteModelInfo noteEditState;
 };

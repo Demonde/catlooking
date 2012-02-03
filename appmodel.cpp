@@ -3,7 +3,7 @@
 #include "appmodel.h"
 
 AppModel* AppModel::instancePointer(0);
-const ModelInfo *AppModel::NullPointer(0);
+ModelInfo *AppModel::NullPointer(0);
 
 AppModel::AppModel(QObject *parent) :
     QObject(parent),
@@ -59,9 +59,15 @@ QString AppModel::getTranslation(QString elementId)
     return translator->getTranslation(elementId);
 }
 
-void AppModel::reportNoteWasChanged(QString newNoteText, int newTextCursorPosition)
+void AppModel::reportNoteState(QString newNoteText)
 {
+//    ModelEvent modelEvent = (noteEditState.text == newNoteText) ? AppModel::CursorChanged : AppModel::NoteChanged;
     noteEditState.text = newNoteText;
-    noteEditState.textCursorPosition = newTextCursorPosition;
     emit modelWasUpdated(AppModel::NoteChanged, &noteEditState);
+}
+
+void AppModel::reportSelectionState(QTextCursor newTextCursor)
+{
+    noteEditState.textCursor = newTextCursor;
+    emit modelWasUpdated(AppModel::CursorChanged, &noteEditState);
 }

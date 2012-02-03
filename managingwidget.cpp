@@ -24,8 +24,8 @@ ManagingWidget::~ManagingWidget()
 
 void ManagingWidget::integrateWithAppModel()
 {
-    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, const ModelInfo *)),
-            this, SLOT(onModelStateChanged(AppModel::ModelEvent, const ModelInfo *)));
+    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, ModelInfo *)),
+            this, SLOT(onModelStateChanged(AppModel::ModelEvent, ModelInfo *)));
     connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
 }
 
@@ -39,7 +39,7 @@ void ManagingWidget::mouseMoveEvent(QMouseEvent */*event*/)
     }
 }
 
-void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, const ModelInfo * /*infoPointer*/)
+void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * /*infoPointer*/)
 {
     if (AppModel::TranslationChanged == modelEvent)
     {

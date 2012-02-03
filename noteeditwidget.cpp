@@ -1,6 +1,6 @@
 #include "noteeditwidget.h"
-#include <QFile> // debug
 #include <QTextBlock> // debug
+#include <QDebug> // debug
 
 const int NoteEditWidget::textEditVerticalMargin(80);
 
@@ -9,16 +9,21 @@ NoteEditWidget::NoteEditWidget(QWidget *parent) :
     appModel(AppModel::getInstance()),
     textEdit(new QTextEdit(this)),
     visualCover(new QFrame(this))
+//    noteStateReporter(new QTimer(this))
 {
     integrateWithAppModel();
     setupVisualCover();
-    connect(textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+    connect(textEdit, SIGNAL(textChanged()), this, SLOT(reportNoteState()));
+    connect(textEdit, SIGNAL(selectionChanged()), this, SLOT(reportSelectionState()));
+//    connect(noteStateReporter, SIGNAL(timeout()), this, SLOT(reportNoteState()));
+//    noteStateReporter->setInterval(500);
+//    noteStateReporter->start();
 }
 
 void NoteEditWidget::integrateWithAppModel()
 {
-    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, const ModelInfo *)),
-            this, SLOT(onModelStateChanged(AppModel::ModelEvent, const ModelInfo *)));
+    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, ModelInfo *)),
+            this, SLOT(onModelStateChanged(AppModel::ModelEvent, ModelInfo *)));
 }
 
 void NoteEditWidget::resizeEvent(QResizeEvent *)
@@ -35,25 +40,42 @@ void NoteEditWidget::resizeEvent(QResizeEvent *)
     }
 }
 
-void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, const ModelInfo * infoPointer)
+void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * infoPointer)
 {
     if (AppModel::NoteChanged == modelEvent)
     {
         NoteModelInfo* newInfo = dynamic_cast<NoteModelInfo*>(infoPointer);
-        if (newInfo)
+        if ((newInfo) && (textEdit->toPlainText() != newInfo->text))
         {
             textEdit->setPlainText(newInfo->text);
-            QTextCursor textCursor = textEdit->textCursor();
-            textCursor.setPosition(newInfo->textCursorPosition);
-            textEdit->setTextCursor(textCursor);
-            // todo: recalculate geometry
         }
     }
+    if (AppModel::CursorChanged == modelEvent)
+    {
+        NoteModelInfo* newInfo = dynamic_cast<NoteModelInfo*>(infoPointer);
+        if (newInfo)
+        {
+            textEdit->setTextCursor(newInfo->textCursor);
+        }
+    }
+//    if (AppModel::CursorChanged == modelEvent)
+//    {
+//        NoteModelInfo* newInfo = dynamic_cast<NoteModelInfo*>(infoPointer);
+//        if (newInfo)
+//        {
+//            textEdit->setTextCursor(newInfo->textCursor);
+//        }
+//    }
 }
 
-void NoteEditWidget::onTextChanged()
+void NoteEditWidget::reportNoteState()
 {
-    appModel->reportNoteWasChanged(textEdit->toPlainText(), textEdit->textCursor().position());
+    appModel->reportNoteState(textEdit->toPlainText());
+}
+
+void NoteEditWidget::reportSelectionState()
+{
+    appModel->reportSelectionState(textEdit->textCursor());
 }
 
 void NoteEditWidget::setupVisualCover()
