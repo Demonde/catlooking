@@ -15,7 +15,8 @@ protected:
     void resizeEvent(QResizeEvent *);
 
 private slots:
-    void onModelStateChanged(AppModel::ModelEvent, const void *);
+    void onModelStateChanged(AppModel::ModelEvent modelEvent, const ModelInfo *infoPointer);
+    void onTextChanged();
 
 private:
     AppModel *appModel;
@@ -23,6 +24,7 @@ private:
     QTextEdit *textEdit;
     QFrame* visualCover;
     void setupVisualCover();
+    static const int textEditVerticalMargin;
 };
 
 #endif // NOTEEDITWIDGET_H

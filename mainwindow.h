@@ -25,7 +25,7 @@ protected:
     void resizeEvent(QResizeEvent *);
 
 private slots:
-    void onModelStateChanged(AppModel::ModelEvent, const void *);
+    void onModelStateChanged(AppModel::ModelEvent, const ModelInfo *);
     void onInactivity();
     void checkMouseMovement();
 

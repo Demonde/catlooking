@@ -22,7 +22,7 @@ signals:
     void mouseInsideManagingWidget();
 
 private slots:
-    void onModelStateChanged(AppModel::ModelEvent, const void *);
+    void onModelStateChanged(AppModel::ModelEvent, const ModelInfo *);
 
 private:
     AppModel *appModel;

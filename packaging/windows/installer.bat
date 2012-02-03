@@ -1,8 +1,8 @@
 @echo off
 rem Make sure these paths are appropriate for your system:
 
-SET mingw_dir=C:\Qt\qtcreator-2.3.1\mingw
-SET qt_dir=C:\Qt\4.7.4
+SET mingw_dir=C:\Qt\qtcreator-2.4.0\mingw
+SET qt_dir=C:\Qt\4.8.0
 
 IF NOT EXIST build\windows MKDIR build\windows
 COPY %mingw_dir%\bin\mingwm10.dll build\windows

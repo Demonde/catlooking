@@ -1,5 +1,8 @@
 #include "noteeditwidget.h"
 #include <QFile> // debug
+#include <QTextBlock> // debug
+
+const int NoteEditWidget::textEditVerticalMargin(80);
 
 NoteEditWidget::NoteEditWidget(QWidget *parent) :
     QFrame(parent),
@@ -9,28 +12,48 @@ NoteEditWidget::NoteEditWidget(QWidget *parent) :
 {
     integrateWithAppModel();
     setupVisualCover();
+    connect(textEdit, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
 }
 
 void NoteEditWidget::integrateWithAppModel()
 {
-    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, const void *)),
-            this, SLOT(onModelStateChanged(AppModel::ModelEvent, const void *)));
+    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, const ModelInfo *)),
+            this, SLOT(onModelStateChanged(AppModel::ModelEvent, const ModelInfo *)));
 }
 
 void NoteEditWidget::resizeEvent(QResizeEvent *)
 {
     visualCover->setGeometry(0, 0, width(), height());
     textEdit->setGeometry(200, 100, width() - 400, height() - 200);
-    // debug
-    QFile htmlFile("/home/sychev/base/catlooking-build/text.html");
-    if (htmlFile.open(QIODevice::ReadOnly))
+    textEdit->setFocus();
+    for (QTextBlock block = textEdit->document()->begin(); block.isValid(); block = block.next())
     {
-        textEdit->setHtml(htmlFile.readAll());
+        QTextCursor tc = QTextCursor(block);
+        QTextBlockFormat fmt = block.blockFormat();
+        fmt.setLineHeight(200, QTextBlockFormat::ProportionalHeight);
+        tc.setBlockFormat(fmt);
     }
 }
 
-void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent, const void * /*dataPointer*/)
+void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, const ModelInfo * infoPointer)
 {
+    if (AppModel::NoteChanged == modelEvent)
+    {
+        NoteModelInfo* newInfo = dynamic_cast<NoteModelInfo*>(infoPointer);
+        if (newInfo)
+        {
+            textEdit->setPlainText(newInfo->text);
+            QTextCursor textCursor = textEdit->textCursor();
+            textCursor.setPosition(newInfo->textCursorPosition);
+            textEdit->setTextCursor(textCursor);
+            // todo: recalculate geometry
+        }
+    }
+}
+
+void NoteEditWidget::onTextChanged()
+{
+    appModel->reportNoteWasChanged(textEdit->toPlainText(), textEdit->textCursor().position());
 }
 
 void NoteEditWidget::setupVisualCover()

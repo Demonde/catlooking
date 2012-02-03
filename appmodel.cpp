@@ -3,7 +3,7 @@
 #include "appmodel.h"
 
 AppModel* AppModel::instancePointer(0);
-const void *AppModel::NullPointer(0);
+const ModelInfo *AppModel::NullPointer(0);
 
 AppModel::AppModel(QObject *parent) :
     QObject(parent),
@@ -57,4 +57,11 @@ void AppModel::reportWdigetMouseInactive()
 QString AppModel::getTranslation(QString elementId)
 {
     return translator->getTranslation(elementId);
+}
+
+void AppModel::reportNoteWasChanged(QString newNoteText, int newTextCursorPosition)
+{
+    noteEditState.text = newNoteText;
+    noteEditState.textCursorPosition = newTextCursorPosition;
+    emit modelWasUpdated(AppModel::NoteChanged, &noteEditState);
 }

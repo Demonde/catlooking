@@ -43,7 +43,7 @@ void MainWindow::resizeEvent(QResizeEvent *)
     noteEditWidget->setGeometry(0, 0, width(), height());
 }
 
-void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent, const void * /*dataPointer*/)
+void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent, const ModelInfo * /*dataPointer*/)
 {
     if (AppModel::UiStateChanged == modelEvent)
     {
@@ -53,8 +53,8 @@ void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent, const void
 
 void MainWindow::integrateWithAppModel()
 {
-    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, const void *)),
-            this, SLOT(onModelStateChanged(AppModel::ModelEvent, const void *)));
+    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, const ModelInfo *)),
+            this, SLOT(onModelStateChanged(AppModel::ModelEvent, const ModelInfo *)));
 }
 
 void MainWindow::showWindow()

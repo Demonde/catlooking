@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "translator.h"
+#include "notemodelinfo.h"
 
 class AppModel : public QObject
 {
@@ -33,19 +34,22 @@ public:
     void reportWidgetMouseActive();
     void reportWdigetMouseInactive();
     QString getTranslation(QString elementId);
+    void reportNoteWasChanged(QString newNoteText, int newTextCursorPosition);
 
 public slots:
     void closeApplication();
 
 signals:
-    void modelWasUpdated(AppModel::ModelEvent, const void *);
+    void modelWasUpdated(AppModel::ModelEvent, const ModelInfo *);
 
 private:
     AppModel static *instancePointer;
     UiState uiState;
     int activeWidgetCounter;
     Translator *translator;
-    static const void *NullPointer;
+    static const ModelInfo *NullPointer;
+//    QString noteText;
+    NoteModelInfo noteEditState;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AppModel::UiStates)

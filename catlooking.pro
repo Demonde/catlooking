@@ -23,7 +23,9 @@ HEADERS  += \
     inactivetimer.h \
     managingwidget.h \
     translator.h \
-    noteeditwidget.h
+    noteeditwidget.h \
+    modelinfo.h \
+    notemodelinfo.h
 
 debug {
     DEFINES += DEBUG
