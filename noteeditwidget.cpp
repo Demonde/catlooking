@@ -1,23 +1,24 @@
 #include "noteeditwidget.h"
-#include <QTextBlock> // debug
+#include <QFont>
+#include <QFontMetrics>
+#include <QTextBlock>
 #include <QDebug> // debug
 
-const int NoteEditWidget::textEditVerticalMargin(80);
+const int NoteEditWidget::TextEditVerticalMargin(100);
+const QString NoteEditWidget::CiceroTextSample("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium");
+const int NoteEditWidget::LineHeightPercentage(122);
+const float NoteEditWidget::NoteEditWidthMultiplier(0.875);
 
 NoteEditWidget::NoteEditWidget(QWidget *parent) :
     QFrame(parent),
     appModel(AppModel::getInstance()),
     textEdit(new QTextEdit(this)),
     visualCover(new QFrame(this))
-//    noteStateReporter(new QTimer(this))
 {
     integrateWithAppModel();
     setupVisualCover();
     connect(textEdit, SIGNAL(textChanged()), this, SLOT(reportNoteState()));
     connect(textEdit, SIGNAL(selectionChanged()), this, SLOT(reportSelectionState()));
-//    connect(noteStateReporter, SIGNAL(timeout()), this, SLOT(reportNoteState()));
-//    noteStateReporter->setInterval(500);
-//    noteStateReporter->start();
 }
 
 void NoteEditWidget::integrateWithAppModel()
@@ -26,16 +27,28 @@ void NoteEditWidget::integrateWithAppModel()
             this, SLOT(onModelStateChanged(AppModel::ModelEvent, ModelInfo *)));
 }
 
+void NoteEditWidget::setFocus()
+{
+    textEdit->setFocus();
+}
+
 void NoteEditWidget::resizeEvent(QResizeEvent *)
 {
+    int noteEditHeight = height() - TextEditVerticalMargin;
+    int noteEditWidth = static_cast<int>(NoteEditWidthMultiplier * noteEditHeight);
+    int noteEditXPos = (width() - noteEditWidth) / 2;
+    int noteEditYPos = (height() - noteEditHeight) / 2;
+
     visualCover->setGeometry(0, 0, width(), height());
-    textEdit->setGeometry(200, 100, width() - 400, height() - 200);
+    textEdit->setGeometry(noteEditXPos, noteEditYPos, noteEditWidth, noteEditHeight);
     textEdit->setFocus();
+    textEdit->setFont(getFontForTextEditWith(noteEditWidth));
+
     for (QTextBlock block = textEdit->document()->begin(); block.isValid(); block = block.next())
     {
         QTextCursor tc = QTextCursor(block);
         QTextBlockFormat fmt = block.blockFormat();
-        fmt.setLineHeight(200, QTextBlockFormat::ProportionalHeight);
+        fmt.setLineHeight(LineHeightPercentage, QTextBlockFormat::ProportionalHeight);
         tc.setBlockFormat(fmt);
     }
 }
@@ -58,14 +71,6 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
             textEdit->setTextCursor(newInfo->textCursor);
         }
     }
-//    if (AppModel::CursorChanged == modelEvent)
-//    {
-//        NoteModelInfo* newInfo = dynamic_cast<NoteModelInfo*>(infoPointer);
-//        if (newInfo)
-//        {
-//            textEdit->setTextCursor(newInfo->textCursor);
-//        }
-//    }
 }
 
 void NoteEditWidget::reportNoteState()
@@ -84,4 +89,20 @@ void NoteEditWidget::setupVisualCover()
     visualCover->setAttribute(Qt::WA_TransparentForMouseEvents);
     visualCover->setFocusPolicy(Qt::NoFocus);
     visualCover->raise();
+}
+
+const QFont NoteEditWidget::getFontForTextEditWith(const int width)
+{
+    int textEditWidth(0);
+    int fontSize(1);
+    QFont font("Designosaur", fontSize, QFont::Normal, true);
+    while (textEditWidth < width)
+    {
+        font.setPointSize(fontSize);
+        QFontMetrics fm(font);
+        textEditWidth = fm.width(CiceroTextSample);
+        ++fontSize;
+    }
+    font.setPointSize(fontSize - 1);
+    return font;
 }

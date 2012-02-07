@@ -134,6 +134,7 @@ void MainWindow::hideManagingWidget()
 {
     managingWidgetAnimation->setEndValue(managingWidgetHiddenGeometry);
     managingWidgetAnimation->start();
+    noteEditWidget->setFocus();
 }
 
 void MainWindow::checkMouseMovement()

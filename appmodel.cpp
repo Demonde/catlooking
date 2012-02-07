@@ -61,7 +61,6 @@ QString AppModel::getTranslation(QString elementId)
 
 void AppModel::reportNoteState(QString newNoteText)
 {
-//    ModelEvent modelEvent = (noteEditState.text == newNoteText) ? AppModel::CursorChanged : AppModel::NoteChanged;
     noteEditState.text = newNoteText;
     emit modelWasUpdated(AppModel::NoteChanged, &noteEditState);
 }

@@ -12,6 +12,9 @@ class NoteEditWidget : public QFrame
 public:
     explicit NoteEditWidget(QWidget *parent = 0);
 
+public slots:
+    void setFocus();
+
 protected:
     void resizeEvent(QResizeEvent *);
 
@@ -27,7 +30,11 @@ private:
     QFrame* visualCover;
 //    QTimer* noteStateReporter;
     void setupVisualCover();
-    static const int textEditVerticalMargin;
+    static const int TextEditVerticalMargin;
+    static const QString CiceroTextSample;
+    static const QFont getFontForTextEditWith(const int width);
+    static const int LineHeightPercentage;
+    static const float NoteEditWidthMultiplier;
 };
 
 #endif // NOTEEDITWIDGET_H
