@@ -16,6 +16,7 @@ class MainWindow : public QFrame
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void setupStyleSheet(AppModel::UiTheme theme = AppModel::DayTheme);
 
 public slots:
     void showWindow();
@@ -39,7 +40,6 @@ private:
     int static const inactivityTimeout;
     int static const managingWidgetWidth;
     int static const managingWidgetHeight;
-    void setupStyleSheet();
     void setIconAndTitle();
     void integrateWithAppModel();
     void updateUi();

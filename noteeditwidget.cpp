@@ -94,7 +94,7 @@ void NoteEditWidget::setupVisualCover()
 const QFont NoteEditWidget::getFontForTextEditWith(const int width)
 {
     int textEditWidth(0);
-    int fontSize(1);
+    int fontSize(2);
     QFont font("Designosaur", fontSize, QFont::Normal, true);
     while (textEditWidth < width)
     {

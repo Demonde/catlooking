@@ -18,6 +18,7 @@ public slots:
 
 private slots:
     void recreateMainWindows();
+    void onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * );
 
 private:
     AppModel appModelStatic;
@@ -25,6 +26,7 @@ private:
     QList<MainWindow *> mainWindowsList;
     QDesktopWidget *desktopWidget;
 
+    void integrateWithAppModel();
     void installFonts();
     void createMainWindows();
     void deleteMainWindows();

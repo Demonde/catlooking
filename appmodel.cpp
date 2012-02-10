@@ -70,3 +70,15 @@ void AppModel::reportSelectionState(QTextCursor newTextCursor)
     noteEditState.textCursor = newTextCursor;
     emit modelWasUpdated(AppModel::CursorChanged, &noteEditState);
 }
+
+void AppModel::setVisualTheme(UiTheme theme)
+{
+    if(AppModel::DayTheme == theme)
+    {
+        emit modelWasUpdated(AppModel::DayThemeEnabled, NULL);
+    }
+    if(AppModel::DarkTheme == theme)
+    {
+        emit modelWasUpdated(AppModel::DarkThemeEnabled, NULL);
+    }
+}

@@ -36,4 +36,6 @@ RESOURCES += \
     translations.qrc
 
 OTHER_FILES += \
-    resources/qss/mainwindow.qss
+    resources/qss/mainwindow.qss \
+    resources/qss/daytheme.qss \
+    resources/qss/darktheme.qss

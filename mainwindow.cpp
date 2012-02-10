@@ -65,11 +65,21 @@ void MainWindow::showWindow()
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 }
 
-void MainWindow::setupStyleSheet()
+void MainWindow::setupStyleSheet(AppModel::UiTheme theme)
 {
-    QFile qssFile(":/qss/resources/qss/mainwindow.qss");
-    qssFile.open(QFile::ReadOnly);
-    setStyleSheet(QLatin1String(qssFile.readAll()));
+    QFile qssGeneralFile(":/qss/resources/qss/mainwindow.qss");
+    qssGeneralFile.open(QFile::ReadOnly);
+    QFile qssThemeFile;
+    if(AppModel::DayTheme == theme)
+    {
+        qssThemeFile.setFileName(":/qss/resources/qss/daytheme.qss");
+    }
+    else
+    {
+        qssThemeFile.setFileName(":/qss/resources/qss/darktheme.qss");
+    }
+    qssThemeFile.open(QFile::ReadOnly);
+    setStyleSheet(QLatin1String(qssGeneralFile.readAll()) + QLatin1String(qssThemeFile.readAll()));
 }
 
 void MainWindow::setIconAndTitle()

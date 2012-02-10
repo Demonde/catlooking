@@ -1,7 +1,6 @@
 #include <QtGui/QApplication>
 #include <QFontDatabase>
 #include <QDebug>
-#include <QFile> //debug
 #include "appcontrol.h"
 
 AppControl::AppControl(QObject *parent) :
@@ -9,6 +8,7 @@ AppControl::AppControl(QObject *parent) :
     appModel(AppModel::getInstance()),
     desktopWidget(QApplication::desktop())
 {
+    integrateWithAppModel();
     installFonts();
     createMainWindows();
     handleScreenChange();
@@ -19,11 +19,35 @@ AppControl::~AppControl()
     deleteMainWindows();
 }
 
+void AppControl::integrateWithAppModel()
+{
+    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, ModelInfo *)),
+            this, SLOT(onModelStateChanged(AppModel::ModelEvent, ModelInfo *)));
+}
+
 void AppControl::receiveApplicationMessage(QString message)
 {
     if (message == "Hello. I'm the other instance of catlooking. I'll die. Bye.")
     {
         recreateMainWindows();
+    }
+}
+
+void AppControl::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo */*infoPointer*/)
+{
+    if (AppModel::DayThemeEnabled == modelEvent)
+    {
+        foreach(MainWindow* window, mainWindowsList)
+        {
+            window->setupStyleSheet(AppModel::DayTheme);
+        }
+    }
+    if (AppModel::DarkThemeEnabled == modelEvent)
+    {
+        foreach(MainWindow* window, mainWindowsList)
+        {
+            window->setupStyleSheet(AppModel::DarkTheme);
+        }
     }
 }
 

@@ -1,0 +1,8 @@
+NoteEditWidget
+{
+    background-color: white;
+}
+
+QTextEdit
+{
+}
