@@ -19,6 +19,9 @@ NoteEditWidget::NoteEditWidget(QWidget *parent) :
     setupVisualCover();
     connect(textEdit, SIGNAL(textChanged()), this, SLOT(reportNoteState()));
     connect(textEdit, SIGNAL(selectionChanged()), this, SLOT(reportSelectionState()));
+    connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(reportSelectionState()));
+    textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void NoteEditWidget::integrateWithAppModel()
@@ -34,10 +37,10 @@ void NoteEditWidget::setFocus()
 
 void NoteEditWidget::resizeEvent(QResizeEvent *)
 {
-    int noteEditHeight = height() - TextEditVerticalMargin;
-    int noteEditWidth = static_cast<int>(NoteEditWidthMultiplier * noteEditHeight);
-    int noteEditXPos = (width() - noteEditWidth) / 2;
-    int noteEditYPos = (height() - noteEditHeight) / 2;
+    noteEditHeight = height() - TextEditVerticalMargin;
+    noteEditWidth = static_cast<int>(NoteEditWidthMultiplier * noteEditHeight);
+    noteEditXPos = (width() - noteEditWidth) / 2;
+    noteEditYPos = (height() - noteEditHeight) / 2;
 
     visualCover->setGeometry(0, 0, width(), height());
     textEdit->setGeometry(noteEditXPos, noteEditYPos, noteEditWidth, noteEditHeight);
@@ -62,6 +65,7 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
         {
             textEdit->setPlainText(newInfo->text);
         }
+        adjustTextEditPosition();
     }
     if (AppModel::CursorChanged == modelEvent)
     {
@@ -70,6 +74,7 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
         {
             textEdit->setTextCursor(newInfo->textCursor);
         }
+        resetTextEditPosition();
     }
 }
 
@@ -105,4 +110,18 @@ const QFont NoteEditWidget::getFontForTextEditWith(const int width)
     }
     font.setPointSize(fontSize - 1);
     return font;
+}
+
+void NoteEditWidget::adjustTextEditPosition()
+{
+    if(textEdit->cursorRect().y() <= textEdit->size().height())
+    {
+        int adjustedNoteEditYPos = (noteEditHeight / 2) - textEdit->cursorRect().y();
+        textEdit->setGeometry(noteEditXPos, adjustedNoteEditYPos, noteEditWidth, noteEditHeight);
+    }
+}
+
+void NoteEditWidget::resetTextEditPosition()
+{
+    textEdit->setGeometry(noteEditXPos, noteEditYPos, noteEditWidth, noteEditHeight);
 }

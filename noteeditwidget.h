@@ -28,13 +28,18 @@ private:
     void integrateWithAppModel();
     QTextEdit *textEdit;
     QFrame* visualCover;
-//    QTimer* noteStateReporter;
     void setupVisualCover();
+    int noteEditHeight;
+    int noteEditWidth;
+    int noteEditXPos;
+    int noteEditYPos;
     static const int TextEditVerticalMargin;
     static const QString CiceroTextSample;
     static const QFont getFontForTextEditWith(const int width);
     static const int LineHeightPercentage;
     static const float NoteEditWidthMultiplier;
+    void adjustTextEditPosition();
+    void resetTextEditPosition();
 };
 
 #endif // NOTEEDITWIDGET_H
