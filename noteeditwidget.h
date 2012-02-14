@@ -11,6 +11,8 @@ class NoteEditWidget : public QFrame
     Q_OBJECT
 public:
     explicit NoteEditWidget(QWidget *parent = 0);
+    void adjustTextEditPosition();
+    void resetTextEditPosition();
 
 public slots:
     void setFocus();
@@ -38,8 +40,6 @@ private:
     static const QFont getFontForTextEditWith(const int width);
     static const int LineHeightPercentage;
     static const float NoteEditWidthMultiplier;
-    void adjustTextEditPosition();
-    void resetTextEditPosition();
 };
 
 #endif // NOTEEDITWIDGET_H

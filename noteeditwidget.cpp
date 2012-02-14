@@ -20,7 +20,7 @@ NoteEditWidget::NoteEditWidget(QWidget *parent) :
     connect(textEdit, SIGNAL(textChanged()), this, SLOT(reportNoteState()));
     connect(textEdit, SIGNAL(selectionChanged()), this, SLOT(reportSelectionState()));
     connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(reportSelectionState()));
-    textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 

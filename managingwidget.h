@@ -13,13 +13,6 @@ class ManagingWidget : public QFrame
 public:
     explicit ManagingWidget(QWidget *parent = 0);
     ~ManagingWidget();
-    void reportOnMouseGoingInWidget();
-
-protected:
-    void mouseMoveEvent(QMouseEvent *event);
-
-signals:
-    void mouseInsideManagingWidget();
 
 private slots:
     void onModelStateChanged(AppModel::ModelEvent, ModelInfo *);

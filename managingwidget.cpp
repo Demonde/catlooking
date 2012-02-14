@@ -29,16 +29,6 @@ void ManagingWidget::integrateWithAppModel()
     connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
 }
 
-
-void ManagingWidget::mouseMoveEvent(QMouseEvent */*event*/)
-{
-    if(reportOnMouseGoingIn)
-    {
-        emit mouseInsideManagingWidget();
-        reportOnMouseGoingIn = false;
-    }
-}
-
 void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * /*infoPointer*/)
 {
     if (AppModel::TranslationChanged == modelEvent)
@@ -65,9 +55,4 @@ void ManagingWidget::setTranslations()
     exportButton->setText(appModel->getTranslation("ManagingWidgetExport"));
     helpButton->setText(appModel->getTranslation("ManagingWidgetHelp"));
     exitButton->setText(appModel->getTranslation("ManagingWidgetExit"));
-}
-
-void ManagingWidget::reportOnMouseGoingInWidget()
-{
-    reportOnMouseGoingIn = true;
 }

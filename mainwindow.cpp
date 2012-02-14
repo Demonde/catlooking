@@ -99,9 +99,6 @@ void MainWindow::updateUi()
 void MainWindow::setupInactivityMonitor()
 {
     connect(mouseInactiveTimer, SIGNAL(inactivityDetected()), this, SLOT(onInactivity()));
-    connect(managingWidget, SIGNAL(mouseInsideManagingWidget()),
-            mouseInactiveTimer, SLOT(pauseTicker()));
-
     mouseMoveTimer->setInterval(mouseMoveCheckingTimer);
     mouseMoveTimer->start();
     connect(mouseMoveTimer, SIGNAL(timeout()), this, SLOT(checkMouseMovement()));
@@ -115,11 +112,11 @@ void MainWindow::onInactivity()
 
 void MainWindow::onMouseMove()
 {
-    managingWidget->reportOnMouseGoingInWidget();
     if(!mouseInactiveTimer->isActionPresence())
     {
         appModel->reportWidgetMouseActive();
         showManagingWidget();
+        noteEditWidget->resetTextEditPosition();
     }
     mouseInactiveTimer->notifyActivity();
 }
@@ -145,6 +142,7 @@ void MainWindow::hideManagingWidget()
     managingWidgetAnimation->setEndValue(managingWidgetHiddenGeometry);
     managingWidgetAnimation->start();
     noteEditWidget->setFocus();
+    noteEditWidget->adjustTextEditPosition();
 }
 
 void MainWindow::checkMouseMovement()
