@@ -4,9 +4,9 @@ ManagingWidget::ManagingWidget(QWidget *parent) :
     QFrame(parent),
     appModel(AppModel::getInstance()),
     dayThemeButton(new QPushButton(this)),
-    nightThemeButton(new QPushButton(this)),
+    darkThemeButton(new QPushButton(this)),
     exportButton(new QPushButton(this)),
-    helpButton(new QPushButton(this)),
+    eraseButton(new QPushButton(this)),
     exitButton(new QPushButton(this)),
     mainLayout(new QHBoxLayout()),
     reportOnMouseGoingIn(true)
@@ -27,6 +27,8 @@ void ManagingWidget::integrateWithAppModel()
     connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, ModelInfo *)),
             this, SLOT(onModelStateChanged(AppModel::ModelEvent, ModelInfo *)));
     connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
+    connect(dayThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDayTheme()));
+    connect(darkThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDarkTheme()));
 }
 
 void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * /*infoPointer*/)
@@ -40,9 +42,9 @@ void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
 void ManagingWidget::setupLayouts()
 {
     mainLayout->addWidget(dayThemeButton);
-    mainLayout->addWidget(nightThemeButton);
+    mainLayout->addWidget(darkThemeButton);
     mainLayout->addWidget(exportButton);
-    mainLayout->addWidget(helpButton);
+    mainLayout->addWidget(eraseButton);
     mainLayout->addWidget(exitButton);
 
     setLayout(mainLayout);
@@ -51,8 +53,8 @@ void ManagingWidget::setupLayouts()
 void ManagingWidget::setTranslations()
 {
     dayThemeButton->setText(appModel->getTranslation("ManagingWidgetDay"));
-    nightThemeButton->setText(appModel->getTranslation("ManagingWidgetNight"));
+    darkThemeButton->setText(appModel->getTranslation("ManagingWidgetNight"));
     exportButton->setText(appModel->getTranslation("ManagingWidgetExport"));
-    helpButton->setText(appModel->getTranslation("ManagingWidgetHelp"));
+    eraseButton->setText(appModel->getTranslation("ManagingWidgetErase"));
     exitButton->setText(appModel->getTranslation("ManagingWidgetExit"));
 }

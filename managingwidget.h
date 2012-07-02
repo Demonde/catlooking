@@ -21,9 +21,9 @@ private:
     AppModel *appModel;
     void integrateWithAppModel();
     QPushButton *dayThemeButton;
-    QPushButton *nightThemeButton;
+    QPushButton *darkThemeButton;
     QPushButton *exportButton;
-    QPushButton *helpButton;
+    QPushButton *eraseButton;
     QPushButton *exitButton;
     QHBoxLayout *mainLayout;
     void setTranslations();

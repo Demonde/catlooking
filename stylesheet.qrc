@@ -3,5 +3,8 @@
         <file>resources/qss/mainwindow.qss</file>
         <file>resources/qss/daytheme.qss</file>
         <file>resources/qss/darktheme.qss</file>
+        <file>resources/qss/white-paper.png</file>
+        <file>resources/qss/white-paper-cover.png</file>
+        <file>resources/qss/old-monitor-cover.png</file>
     </qresource>
 </RCC>

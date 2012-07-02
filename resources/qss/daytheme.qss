@@ -1,6 +1,13 @@
 NoteEditWidget
 {
-    background-color: white;
+    background-image: url(:/qss/resources/qss/white-paper.png);
+    background-repeat: repeat-xy;
+}
+
+#visualCover
+{
+    background-image: url(:/qss/resources/qss/white-paper-cover.png);
+    background-repeat: repeat-xy;
 }
 
 QTextEdit

@@ -49,6 +49,8 @@ public:
 
 public slots:
     void closeApplication();
+    void switchToDayTheme();
+    void switchToDarkTheme();
 
 signals:
     void modelWasUpdated(AppModel::ModelEvent, ModelInfo *);

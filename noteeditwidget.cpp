@@ -8,6 +8,7 @@ const int NoteEditWidget::TextEditVerticalMargin(100);
 const QString NoteEditWidget::CiceroTextSample("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium");
 const int NoteEditWidget::LineHeightPercentage(122);
 const float NoteEditWidget::NoteEditWidthMultiplier(0.875);
+const int NoteEditWidget::TextEditAnimationDuration(400);
 
 NoteEditWidget::NoteEditWidget(QWidget *parent) :
     QFrame(parent),
@@ -23,6 +24,7 @@ NoteEditWidget::NoteEditWidget(QWidget *parent) :
     connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(reportSelectionState()));
     textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    textEditAnimation->setDuration(TextEditAnimationDuration);
 }
 
 void NoteEditWidget::integrateWithAppModel()
@@ -101,7 +103,7 @@ const QFont NoteEditWidget::getFontForTextEditWith(const int width)
 {
     int textEditWidth(0);
     int fontSize(2);
-    QFont font("Arial", fontSize, QFont::Normal, true);
+    QFont font("Arial", fontSize, QFont::Bold, true);
     while (textEditWidth < width)
     {
         font.setPointSize(fontSize);

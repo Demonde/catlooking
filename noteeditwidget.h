@@ -42,6 +42,7 @@ private:
     static const QFont getFontForTextEditWith(const int width);
     static const int LineHeightPercentage;
     static const float NoteEditWidthMultiplier;
+    static const int TextEditAnimationDuration;
 };
 
 #endif // NOTEEDITWIDGET_H

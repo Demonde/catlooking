@@ -1,7 +1,15 @@
 NoteEditWidget
 {
+    background-color: black;
+}
+
+#visualCover
+{
+    background-image: url(:/qss/resources/qss/old-monitor-cover.png);
+    background-repeat: repeat-xy;
 }
 
 QTextEdit
 {
+    color: rgb(160, 200, 160);
 }

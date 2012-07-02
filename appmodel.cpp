@@ -30,6 +30,16 @@ void AppModel::closeApplication()
     emit modelWasUpdated(UiStateChanged, NullPointer);
 }
 
+void AppModel::switchToDayTheme()
+{
+    setVisualTheme(AppModel::DayTheme);
+}
+
+void AppModel::switchToDarkTheme()
+{
+    setVisualTheme(AppModel::DarkTheme);
+}
+
 AppModel::UiState AppModel::getUiState()
 {
     return uiState;
