@@ -11,6 +11,7 @@ AppControl::AppControl(QObject *parent) :
     integrateWithAppModel();
     createMainWindows();
     handleScreenChange();
+    appModel->restoreText();
 }
 
 AppControl::~AppControl()

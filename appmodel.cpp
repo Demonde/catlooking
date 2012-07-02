@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QSettings>
 #include <QMutex>
 #include "appmodel.h"
 
@@ -26,6 +27,7 @@ AppModel* AppModel::getInstance()
 
 void AppModel::closeApplication()
 {
+    saveText();
     uiState = AppModel::CloseState;
     emit modelWasUpdated(UiStateChanged, NullPointer);
 }
@@ -91,4 +93,16 @@ void AppModel::setVisualTheme(UiTheme theme)
     {
         emit modelWasUpdated(AppModel::DarkThemeEnabled, NULL);
     }
+}
+
+void AppModel::restoreText()
+{
+    QSettings settings("catlooking.com", "catlooking");
+    reportNoteState(settings.value("text").toString());
+}
+
+void AppModel::saveText()
+{
+    QSettings settings("catlooking.com", "catlooking");
+    settings.setValue("text", noteEditState.text);
 }

@@ -46,6 +46,7 @@ public:
     void reportNoteState(QString newNoteText);
     void reportSelectionState(QTextCursor newTextCursor);
     void setVisualTheme(UiTheme theme);
+    void restoreText();
 
 public slots:
     void closeApplication();
@@ -62,6 +63,7 @@ private:
     Translator *translator;
     static ModelInfo *NullPointer;
     NoteModelInfo noteEditState;
+    void saveText();
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AppModel::UiStates)
