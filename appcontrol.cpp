@@ -3,15 +3,19 @@
 #include <QDebug>
 #include "appcontrol.h"
 
+const int AppControl::AutoSaveTimerInterval(30 * 1000); // 30 seconds
+
 AppControl::AppControl(QObject *parent) :
     QObject(parent),
     appModel(AppModel::getInstance()),
-    desktopWidget(QApplication::desktop())
+    desktopWidget(QApplication::desktop()),
+    autoSaveTimer(new QTimer(this))
 {
     integrateWithAppModel();
     createMainWindows();
     handleScreenChange();
     appModel->restoreText();
+    setupAutoSaveTimer();
 }
 
 AppControl::~AppControl()
@@ -81,4 +85,11 @@ void AppControl::handleScreenChange()
 {
     connect(desktopWidget, SIGNAL(workAreaResized(int)),
             this, SLOT(recreateMainWindows()));
+}
+
+void AppControl::setupAutoSaveTimer()
+{
+    connect(autoSaveTimer, SIGNAL(timeout()), appModel, SLOT(saveText()));
+    autoSaveTimer->setInterval(AutoSaveTimerInterval);
+    autoSaveTimer->start();
 }

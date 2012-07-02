@@ -52,6 +52,7 @@ public slots:
     void closeApplication();
     void switchToDayTheme();
     void switchToDarkTheme();
+    void saveText();
 
 signals:
     void modelWasUpdated(AppModel::ModelEvent, ModelInfo *);
@@ -63,7 +64,6 @@ private:
     Translator *translator;
     static ModelInfo *NullPointer;
     NoteModelInfo noteEditState;
-    void saveText();
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AppModel::UiStates)

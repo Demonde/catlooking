@@ -25,11 +25,15 @@ private:
     AppModel *appModel;
     QList<MainWindow *> mainWindowsList;
     QDesktopWidget *desktopWidget;
+    QTimer *autoSaveTimer;
 
     void integrateWithAppModel();
     void createMainWindows();
     void deleteMainWindows();
     void handleScreenChange();
+    void setupAutoSaveTimer();
+
+    static const int AutoSaveTimerInterval;
 };
 
 #endif // APPCONTROL_H
