@@ -9,7 +9,6 @@ AppControl::AppControl(QObject *parent) :
     desktopWidget(QApplication::desktop())
 {
     integrateWithAppModel();
-    installFonts();
     createMainWindows();
     handleScreenChange();
 }
@@ -49,15 +48,6 @@ void AppControl::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo 
             window->setupStyleSheet(AppModel::DarkTheme);
         }
     }
-}
-
-void AppControl::installFonts()
-{
-    QFontDatabase::addApplicationFont("./fonts/chinese.ttc");
-    QFontDatabase::addApplicationFont("./fonts/designosaur-italic.ttf");
-//    int result1 = QFontDatabase::addApplicationFont("./fonts/chinese.ttc");
-//    int result2 = QFontDatabase::addApplicationFont("./fonts/designosaur-italic.ttf");
-//    qDebug() << "Result1 =" << result1 << "Result2 =" << result2;
 }
 
 void AppControl::createMainWindows()

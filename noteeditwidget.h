@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QTextEdit>
 #include <QTimer>
+#include <QPropertyAnimation>
 #include "appmodel.h"
 
 class NoteEditWidget : public QFrame
@@ -35,6 +36,7 @@ private:
     int noteEditWidth;
     int noteEditXPos;
     int noteEditYPos;
+    QPropertyAnimation *textEditAnimation;
     static const int TextEditVerticalMargin;
     static const QString CiceroTextSample;
     static const QFont getFontForTextEditWith(const int width);

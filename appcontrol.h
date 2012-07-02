@@ -27,7 +27,6 @@ private:
     QDesktopWidget *desktopWidget;
 
     void integrateWithAppModel();
-    void installFonts();
     void createMainWindows();
     void deleteMainWindows();
     void handleScreenChange();

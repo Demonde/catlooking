@@ -13,7 +13,8 @@ NoteEditWidget::NoteEditWidget(QWidget *parent) :
     QFrame(parent),
     appModel(AppModel::getInstance()),
     textEdit(new QTextEdit(this)),
-    visualCover(new QFrame(this))
+    visualCover(new QFrame(this)),
+    textEditAnimation(new QPropertyAnimation(textEdit, "geometry"))
 {
     integrateWithAppModel();
     setupVisualCover();
@@ -100,7 +101,7 @@ const QFont NoteEditWidget::getFontForTextEditWith(const int width)
 {
     int textEditWidth(0);
     int fontSize(2);
-    QFont font("Designosaur", fontSize, QFont::Normal, true);
+    QFont font("Arial", fontSize, QFont::Normal, true);
     while (textEditWidth < width)
     {
         font.setPointSize(fontSize);
@@ -114,14 +115,20 @@ const QFont NoteEditWidget::getFontForTextEditWith(const int width)
 
 void NoteEditWidget::adjustTextEditPosition()
 {
+    textEditAnimation->stop();
     if(textEdit->cursorRect().y() <= textEdit->size().height())
     {
         int adjustedNoteEditYPos = (noteEditHeight / 2) - textEdit->cursorRect().y();
-        textEdit->setGeometry(noteEditXPos, adjustedNoteEditYPos, noteEditWidth, noteEditHeight);
+        textEditAnimation->setEndValue(QRect(noteEditXPos, adjustedNoteEditYPos, noteEditWidth, noteEditHeight));
+        textEditAnimation->start();
+        textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     }
 }
 
 void NoteEditWidget::resetTextEditPosition()
 {
-    textEdit->setGeometry(noteEditXPos, noteEditYPos, noteEditWidth, noteEditHeight);
+    textEditAnimation->stop();
+    textEditAnimation->setEndValue(QRect(noteEditXPos, noteEditYPos, noteEditWidth, noteEditHeight));
+    textEditAnimation->start();
+    textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 }
