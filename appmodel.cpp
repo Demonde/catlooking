@@ -125,7 +125,6 @@ void AppModel::exportText(QWidget* parent = NULL)
         }
         writeDataToTextFile(fileName, noteEditState.text.toUtf8());
         textWasChangedSinceLastExport = false;
-        switchToEditState();
     }
 }
 
