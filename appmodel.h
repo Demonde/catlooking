@@ -53,6 +53,7 @@ public slots:
     void switchToDayTheme();
     void switchToDarkTheme();
     void saveText();
+    void exportText();
 
 signals:
     void modelWasUpdated(AppModel::ModelEvent, ModelInfo *);
@@ -64,6 +65,10 @@ private:
     Translator *translator;
     static ModelInfo *NullPointer;
     NoteModelInfo noteEditState;
+    bool isFileExists(QString path);
+    void removeFile(QString path);
+    void writeDataToTextFile(QString path, QByteArray data);
+    void setOpenPermissions(QString path);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AppModel::UiStates)

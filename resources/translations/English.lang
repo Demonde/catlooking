@@ -6,4 +6,6 @@
     <item id="ManagingWidgetExport">export</item>
     <item id="ManagingWidgetErase">erase</item>
     <item id="ManagingWidgetExit">exit</item>
+    <item id="ExportTextPrompt">Save your text</item>
+    <item id="ExportTextFileTypes">Text files (*.txt);;All files (*)</item>
 </translation>
