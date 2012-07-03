@@ -27,8 +27,8 @@ public:
     enum UiState {
         EditState = 0x0,
         OptionsState = 0x1,
-        AboutState = 0x2,
-        ExportState = 0x3,
+        ExportState = 0x2,
+        EraseState = 0x3,
         CloseState = 0x4
     };
     Q_DECLARE_FLAGS(UiStates, UiState)
@@ -47,13 +47,17 @@ public:
     void reportSelectionState(QTextCursor newTextCursor);
     void setVisualTheme(UiTheme theme);
     void restoreText();
+    void clearTextVaraible();
+    bool isTextWasChangedSinceLastExport();
+    void switchToEditState();
 
 public slots:
     void closeApplication();
     void switchToDayTheme();
     void switchToDarkTheme();
     void saveText();
-    void exportText();
+    void exportText(QWidget *parent);
+    void switchToEraseState();
 
 signals:
     void modelWasUpdated(AppModel::ModelEvent, ModelInfo *);
@@ -69,6 +73,7 @@ private:
     void removeFile(QString path);
     void writeDataToTextFile(QString path, QByteArray data);
     void setOpenPermissions(QString path);
+    bool textWasChangedSinceLastExport;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AppModel::UiStates)

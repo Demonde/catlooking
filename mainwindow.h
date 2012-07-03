@@ -52,6 +52,7 @@ private:
     QTimer *mouseMoveTimer;
     QPoint oldMousePosition;
     int static const mouseMoveCheckingTimer;
+    void askForErasing();
 };
 
 #endif // MAINWINDOW_H

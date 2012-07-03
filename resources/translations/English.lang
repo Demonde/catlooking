@@ -8,4 +8,9 @@
     <item id="ManagingWidgetExit">exit</item>
     <item id="ExportTextPrompt">Save your text</item>
     <item id="ExportTextFileTypes">Text files (*.txt);;All files (*)</item>
+    <item id="EraseTextButtonQuestion">You are going to erase your text.</item>
+    <item id="EraseTextButtonQuestionWithExportOption">You are going to erase your text. Maybe you'd like to export it first?</item>
+    <item id="EraseTextButtonErase">Erase all text</item>
+    <item id="EraseTextButtonCancel">Cancel</item>
+    <item id="EraseTextButtonExport">Export before erasing</item>
 </translation>

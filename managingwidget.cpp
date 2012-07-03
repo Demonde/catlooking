@@ -26,10 +26,11 @@ void ManagingWidget::integrateWithAppModel()
 {
     connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, ModelInfo *)),
             this, SLOT(onModelStateChanged(AppModel::ModelEvent, ModelInfo *)));
-    connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
     connect(dayThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDayTheme()));
     connect(darkThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDarkTheme()));
-    connect(exportButton, SIGNAL(clicked()), appModel, SLOT(exportText()));
+    connect(exportButton, SIGNAL(clicked()), this, SLOT(askForExport()));
+    connect(eraseButton, SIGNAL(clicked()), appModel, SLOT(switchToEraseState()));
+    connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
 }
 
 void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * /*infoPointer*/)
@@ -58,4 +59,9 @@ void ManagingWidget::setTranslations()
     exportButton->setText(appModel->getTranslation("ManagingWidgetExport"));
     eraseButton->setText(appModel->getTranslation("ManagingWidgetErase"));
     exitButton->setText(appModel->getTranslation("ManagingWidgetExit"));
+}
+
+void ManagingWidget::askForExport()
+{
+    appModel->exportText(this);
 }

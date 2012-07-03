@@ -12,7 +12,8 @@ AppModel::AppModel(QObject *parent) :
     QObject(parent),
     uiState(AppModel::OptionsState),
     activeWidgetCounter(0),
-    translator(new Translator(this))
+    translator(new Translator(this)),
+    textWasChangedSinceLastExport(true)
 {
     QMutex creationMutex;
     creationMutex.lock();
@@ -76,6 +77,7 @@ QString AppModel::getTranslation(QString elementId)
 void AppModel::reportNoteState(QString newNoteText)
 {
     noteEditState.text = newNoteText;
+    textWasChangedSinceLastExport = true;
     emit modelWasUpdated(AppModel::NoteChanged, &noteEditState);
 }
 
@@ -109,9 +111,9 @@ void AppModel::saveText()
     settings.setValue("text", noteEditState.text);
 }
 
-void AppModel::exportText()
+void AppModel::exportText(QWidget* parent = NULL)
 {
-    QString fileName = QFileDialog::getSaveFileName(NULL,
+    QString fileName = QFileDialog::getSaveFileName(parent,
                                 getInstance()->getTranslation("ExportTextPrompt"),
                                 QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation),
                                 getInstance()->getTranslation("ExportTextFileTypes"));
@@ -122,6 +124,8 @@ void AppModel::exportText()
             removeFile(fileName);
         }
         writeDataToTextFile(fileName, noteEditState.text.toUtf8());
+        textWasChangedSinceLastExport = false;
+        switchToEditState();
     }
 }
 
@@ -158,4 +162,26 @@ void AppModel::setOpenPermissions(QString path)
     file.setFileName(path);
     file.setPermissions(QFile::WriteOwner | QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther
                         | QFile::ReadOwner | QFile::ReadUser | QFile::ReadGroup | QFile::ReadOther);
+}
+
+void AppModel::switchToEraseState()
+{
+    uiState = AppModel::EraseState;
+    emit modelWasUpdated(UiStateChanged, NullPointer);
+}
+
+void AppModel::switchToEditState()
+{
+    uiState = AppModel::EditState;
+    emit modelWasUpdated(UiStateChanged, NullPointer);
+}
+
+void AppModel::clearTextVaraible()
+{
+    reportNoteState(QString(""));
+}
+
+bool AppModel::isTextWasChangedSinceLastExport()
+{
+    return textWasChangedSinceLastExport && !noteEditState.text.isEmpty();
 }

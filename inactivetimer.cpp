@@ -46,7 +46,8 @@ bool InactiveTimer::isActionPresence()
     return ticker->isActive();
 }
 
-void InactiveTimer::pauseTicker()
+void InactiveTimer::emulateInactivity()
 {
+    emit inactivityDetected();
     ticker->stop();
 }
