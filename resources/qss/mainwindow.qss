@@ -3,6 +3,51 @@ ManagingWidget
         /*border: 1px solid blue;*/
 }
 
+QScrollBar:vertical
+{
+    border: none;
+    background: rgba(0, 0, 0, 0%);
+    width: 15px;
+    margin: 0px;
+}
+
+QScrollBar::handle:vertical
+{
+    border: 0px solid rgba(0, 0, 0, 0%);
+    border-radius: 5px;
+    background: #989883;
+    min-height: 20px;
+}
+
+QScrollBar::add-line:vertical
+{
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical
+{
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical
+{
+    border: 2px solid grey;
+    width: 3px;
+    height: 3px;
+    background: white;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical
+{
+    background: none;
+}
+
 MainWindow
 {
         /*border: 1px solid red;*/
