@@ -19,6 +19,7 @@ ManagingWidget QPushButton
 {
     background-color: #c4a54c;
     border-color: #000000;
+    color: #ffffff;
 }
 
 ManagingWidget QPushButton:pressed
