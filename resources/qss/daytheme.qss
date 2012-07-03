@@ -12,4 +12,16 @@ NoteEditWidget
 
 QTextEdit
 {
+    color: rgb(0, 0, 0);
+}
+
+ManagingWidget QPushButton
+{
+    background-color: #c4a54c;
+    border-color: #000000;
+}
+
+ManagingWidget QPushButton:pressed
+{
+    background-color: #ede48e;
 }
