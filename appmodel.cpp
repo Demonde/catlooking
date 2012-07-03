@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <QSettings>
 #include <QMutex>
+#include <QFileDialog>
+#include <QDesktopServices>
 #include "appmodel.h"
 
 AppModel* AppModel::instancePointer(0);
@@ -105,4 +107,55 @@ void AppModel::saveText()
 {
     QSettings settings("catlooking.com", "catlooking");
     settings.setValue("text", noteEditState.text);
+}
+
+void AppModel::exportText()
+{
+    QString fileName = QFileDialog::getSaveFileName(NULL,
+                                getInstance()->getTranslation("ExportTextPrompt"),
+                                QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation),
+                                getInstance()->getTranslation("ExportTextFileTypes"));
+    if (!fileName.isEmpty())
+    {
+        if (isFileExists(fileName))
+        {
+            removeFile(fileName);
+        }
+        writeDataToTextFile(fileName, noteEditState.text.toUtf8());
+    }
+}
+
+bool AppModel::isFileExists(QString path)
+{
+    QFile file;
+    file.setFileName(path);
+    return file.exists();
+}
+
+void AppModel::removeFile(QString path)
+{
+    QFile file;
+    file.setFileName(path);
+    if (file.exists())
+    {
+        setOpenPermissions(path);
+        file.remove();
+    }
+}
+
+void AppModel::writeDataToTextFile(QString path, QByteArray data)
+{
+    QFile dataFile(path);
+    if (dataFile.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        dataFile.write(data);
+    }
+}
+
+void AppModel::setOpenPermissions(QString path)
+{
+    QFile file;
+    file.setFileName(path);
+    file.setPermissions(QFile::WriteOwner | QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther
+                        | QFile::ReadOwner | QFile::ReadUser | QFile::ReadGroup | QFile::ReadOther);
 }

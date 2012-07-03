@@ -29,6 +29,7 @@ void ManagingWidget::integrateWithAppModel()
     connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
     connect(dayThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDayTheme()));
     connect(darkThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDarkTheme()));
+    connect(exportButton, SIGNAL(clicked()), appModel, SLOT(exportText()));
 }
 
 void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * /*infoPointer*/)
