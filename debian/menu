@@ -1,0 +1,3 @@
+?package(catlooking):needs="X11" section="Applications/Office"\
+  title="Catlooking" command="catlooking"\
+  icon="/usr/share/pixmaps/catlooking.xpm"

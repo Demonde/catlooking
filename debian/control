@@ -1,0 +1,22 @@
+Source: catlooking
+Section: x11
+Priority: optional
+Maintainer: Alex Sychev <194145@gmail.com>
+Build-Depends: debhelper (>= 7.4.12), libqt4-dev (>= 4.5.0)
+Standards-Version: 3.8.4
+Vcs-Git: git://github.com/sychev/catlooking.git
+Vcs-Browser: https://github.com/sychev/catlooking/
+Homepage: http://catlooking.com/
+
+Package: catlooking
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A text editor for inspiration
+ Catlooking. When only text counts. If your find the interface of modern text
+ editors distracting. If you don’t need 100 different font types, 50 different
+ text colors or fancy text layout… in fact if the content is more important
+ than the look of your text, you should try Catlooking.
+ Catlooking is text editing focused on the text to help you find inspiration.
+ So, if your looking for a place to be left alone with your thoughts and write
+ in a peaceful environment, Catlooking is a good start. Unfortunately, it can’t
+ do anything for the kids running and screaming around you…

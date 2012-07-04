@@ -2,6 +2,11 @@ QT       += core gui network xml
 
 TARGET = catlooking
 TEMPLATE = app
+DESTDIR         = build
+OBJECTS_DIR     = build
+MOC_DIR         = build
+RCC_DIR         = build
+VERSION         = 2.0.0
 win32:DESTDIR = build/windows
 
 SOURCES += \
@@ -39,3 +44,8 @@ OTHER_FILES += \
     resources/qss/mainwindow.qss \
     resources/qss/daytheme.qss \
     resources/qss/darktheme.qss
+
+# Stuff for Windows
+win32 {
+    RC_FILE                 = portabase.rc
+}
