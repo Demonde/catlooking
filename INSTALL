@@ -1,0 +1,46 @@
+Windows Development Environment
+-------------------------------
+To compile Catlooking for use as a Windows desktop application, you will
+need the following:
+- Windows XP, Vista, or 7
+- A recent version of Qt 4 (http://qt.nokia.com/downloads).  It's easiest to
+  get started with a version that comes with the MinGW compiler, since I
+  haven't tested the latest code with Visual Studio.  Add both the "bin"
+  directory and the "mingw\bin" directory that come with it to your "Path"
+  environment variable.
+
+Linux/UNIX Development Environment
+----------------------------------
+To compile Catlooking for use as a Linux or UNIX desktop application, you
+will need the following:
+- g++ (any relatively recent version should work)
+- A recent version of Qt 4 (including qmake and development headers)
+- Other packages as needed to satisfy the above requirements or create
+  packages for your OS/distribution
+  
+Catlooking for Windows Compilation, Packaging
+--------------------------------------------
+- Open a command prompt, and change to the root directory of the downloaded
+  Catlooking source code.  If this isn't at "C:\catlooking", you'll have to
+  change the paths for "LIBS" and "INCLUDEPATH" in catlooking.pro.
+- From that directory run "packaging\windows\build.bat"; this will generate a
+  working catlooking.exe file in the "build" directory.
+- If you want to create an installer for Catlooking, first install Inno Setup.
+  Then run "packaging\windows\installer.bat"; you may need to edit it first
+  in order to adjust the paths to Qt and/or Inno Setup.  This will generate an
+  executable installer in the "build/windows" directory.
+
+Debian Package Building
+-----------------------
+To create a Debian package for the desktop version of Catlooking, from the
+root Catlooking source directory run "packaging/linux/debian.sh".  If you have
+all the appropriate development packages installed, the .deb file will be
+generated in the build/debian directory.
+
+Linux/UNIX compilation
+----------------------
+- Set the QMAKESPEC and QTDIR environment variables as appropriate for your
+  platform
+- Run qmake on catlooking.pro
+- Run make
+
