@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE catlookingTranslation>
+<translation version="0.1">
+    <item id="ManagingWidgetDay">день</item>
+    <item id="ManagingWidgetNight">ночь</item>
+    <item id="ManagingWidgetExport">экспорт</item>
+    <item id="ManagingWidgetErase">стереть</item>
+    <item id="ManagingWidgetExit">выход</item>
+    <item id="ExportTextPrompt">Сохраните ваш текст</item>
+    <item id="ExportTextFileTypes">Текстовые файлы (*.txt);;Все файлы (*)</item>
+    <item id="EraseTextButtonQuestion">Вы собираетесь стереть набранный текст.</item>
+    <item id="EraseTextButtonQuestionWithExportOption">Вы собираетесь стереть набранный текст. Не хотите ли сперва его сохранить?</item>
+    <item id="EraseTextButtonErase">Стереть весь текст</item>
+    <item id="EraseTextButtonCancel">Не хочу стирать</item>
+    <item id="EraseTextButtonExport">Сперва сохранить, а потом стереть</item>
+</translation>
