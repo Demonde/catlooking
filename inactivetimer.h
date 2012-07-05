@@ -11,7 +11,6 @@ public:
     explicit InactiveTimer(int msecInactivityTimeout, QObject *parent);
     void notifyActivity();
     bool isActionPresence();
-    void emulateInactivity();
 
 public slots:
     void startTicker();

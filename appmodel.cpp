@@ -3,6 +3,8 @@
 #include <QMutex>
 #include <QFileDialog>
 #include <QDesktopServices>
+#include <QMessageBox>
+#include <QPushButton>
 #include "appmodel.h"
 
 AppModel* AppModel::instancePointer(0);
@@ -126,6 +128,8 @@ void AppModel::exportText(QWidget* parent = NULL)
         writeDataToTextFile(fileName, noteEditState.text.toUtf8());
         textWasChangedSinceLastExport = false;
     }
+    uiState = AppModel::EditState;
+    emit modelWasUpdated(UiStateChanged, NullPointer);
 }
 
 bool AppModel::isFileExists(QString path)
@@ -163,18 +167,6 @@ void AppModel::setOpenPermissions(QString path)
                         | QFile::ReadOwner | QFile::ReadUser | QFile::ReadGroup | QFile::ReadOther);
 }
 
-void AppModel::switchToEraseState()
-{
-    uiState = AppModel::EraseState;
-    emit modelWasUpdated(UiStateChanged, NullPointer);
-}
-
-void AppModel::switchToEditState()
-{
-    uiState = AppModel::EditState;
-    emit modelWasUpdated(UiStateChanged, NullPointer);
-}
-
 void AppModel::clearTextVaraible()
 {
     reportNoteState(QString(""));
@@ -183,4 +175,49 @@ void AppModel::clearTextVaraible()
 bool AppModel::isTextWasChangedSinceLastExport()
 {
     return textWasChangedSinceLastExport && !noteEditState.text.isEmpty();
+}
+
+void AppModel::eraseText(QWidget* parent = NULL)
+{
+    QMessageBox eraseAskMessageBox(parent);
+
+    if(getInstance()->isTextWasChangedSinceLastExport())
+    {
+        eraseAskMessageBox.setText(getInstance()->getTranslation("EraseTextButtonQuestionWithExportOption"));
+    }
+    else
+    {
+        eraseAskMessageBox.setText(getInstance()->getTranslation("EraseTextButtonQuestion"));
+    }
+    QPushButton *exportTextButton = NULL;
+    QPushButton *eraseTextButton;
+    if(getInstance()->isTextWasChangedSinceLastExport())
+    {
+        exportTextButton =
+                eraseAskMessageBox.addButton(getInstance()->getTranslation("EraseTextButtonExport"), QMessageBox::ActionRole);
+    }
+    eraseTextButton =
+            eraseAskMessageBox.addButton(getInstance()->getTranslation("EraseTextButtonErase"), QMessageBox::ActionRole);
+            eraseAskMessageBox.addButton(getInstance()->getTranslation("EraseTextButtonCancel"), QMessageBox::RejectRole);
+
+    eraseAskMessageBox.exec();
+    if (eraseAskMessageBox.clickedButton() == eraseTextButton)
+    {
+        getInstance()->clearTextVaraible();
+    }
+    if (getInstance()->isTextWasChangedSinceLastExport() && (eraseAskMessageBox.clickedButton() == exportTextButton))
+    {
+        getInstance()->exportText(parent);
+        if(!getInstance()->isTextWasChangedSinceLastExport())
+        {
+            getInstance()->clearTextVaraible();
+        }
+    }
+    while(!eraseAskMessageBox.buttons().isEmpty())
+    {
+        eraseAskMessageBox.removeButton(eraseAskMessageBox.buttons().at(0));
+    }
+
+    uiState = AppModel::EditState;
+    emit modelWasUpdated(UiStateChanged, NullPointer);
 }

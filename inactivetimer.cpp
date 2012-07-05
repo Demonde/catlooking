@@ -45,10 +45,3 @@ bool InactiveTimer::isActionPresence()
 {
     return ticker->isActive();
 }
-
-void InactiveTimer::emulateInactivity()
-{
-    clearTickerSteps();
-    ticker->stop();
-    emit inactivityDetected();
-}

@@ -57,7 +57,7 @@ public slots:
     void switchToDarkTheme();
     void saveText();
     void exportText(QWidget *parent);
-    void switchToEraseState();
+    void eraseText(QWidget* parent);
 
 signals:
     void modelWasUpdated(AppModel::ModelEvent, ModelInfo *);

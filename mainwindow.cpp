@@ -1,7 +1,5 @@
 #include <QShortcut>
 #include <QFile>
-#include <QMessageBox>
-#include <QDebug>
 #include <QApplication>
 #include "mainwindow.h"
 
@@ -105,17 +103,10 @@ void MainWindow::updateUi()
     }
     if(AppModel::EditState == appModel->getUiState())
     {
-#ifdef Q_WS_WIN
-        setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-#endif
-        mouseInactiveTimer->emulateInactivity();
-    }
-    if(AppModel::EraseState == appModel->getUiState())
-    {
-#ifdef Q_WS_WIN
-        setWindowFlags(windowFlags() & (~Qt::WindowStaysOnTopHint));
-#endif
-        askForErasing();
+        if(this->isEnabled())
+        {
+            noteEditWidget->setFocus();
+        }
     }
 }
 
@@ -178,48 +169,4 @@ void MainWindow::checkMouseMovement()
             onMouseMove();
         }
     }
-}
-
-void MainWindow::askForErasing()
-{
-    QMessageBox eraseAskMessageBox(this);
-
-    if(appModel->isTextWasChangedSinceLastExport())
-    {
-        eraseAskMessageBox.setText(appModel->getTranslation("EraseTextButtonQuestionWithExportOption"));
-    }
-    else
-    {
-        eraseAskMessageBox.setText(appModel->getTranslation("EraseTextButtonQuestion"));
-    }
-    QPushButton *exportTextButton = NULL;
-    QPushButton *eraseTextButton;
-    if(appModel->isTextWasChangedSinceLastExport())
-    {
-        exportTextButton =
-                eraseAskMessageBox.addButton(appModel->getTranslation("EraseTextButtonExport"), QMessageBox::ActionRole);
-    }
-    eraseTextButton =
-            eraseAskMessageBox.addButton(appModel->getTranslation("EraseTextButtonErase"), QMessageBox::ActionRole);
-            eraseAskMessageBox.addButton(appModel->getTranslation("EraseTextButtonCancel"), QMessageBox::RejectRole);
-
-    eraseAskMessageBox.exec();
-    if (eraseAskMessageBox.clickedButton() == eraseTextButton)
-    {
-        appModel->clearTextVaraible();
-    }
-    if (appModel->isTextWasChangedSinceLastExport() && (eraseAskMessageBox.clickedButton() == exportTextButton))
-    {
-        appModel->exportText(this);
-        if(!appModel->isTextWasChangedSinceLastExport())
-        {
-            appModel->clearTextVaraible();
-        }
-    }
-    while(!eraseAskMessageBox.buttons().isEmpty())
-    {
-        eraseAskMessageBox.removeButton(eraseAskMessageBox.buttons().at(0));
-    }
-    eraseAskMessageBox.close();
-    appModel->switchToEditState();
 }

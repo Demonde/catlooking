@@ -17,6 +17,7 @@ public:
 private slots:
     void onModelStateChanged(AppModel::ModelEvent, ModelInfo *);
     void askForExport();
+    void askForErase();
 
 private:
     AppModel *appModel;

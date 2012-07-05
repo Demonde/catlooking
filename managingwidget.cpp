@@ -29,7 +29,7 @@ void ManagingWidget::integrateWithAppModel()
     connect(dayThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDayTheme()));
     connect(darkThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDarkTheme()));
     connect(exportButton, SIGNAL(clicked()), this, SLOT(askForExport()));
-    connect(eraseButton, SIGNAL(clicked()), appModel, SLOT(switchToEraseState()));
+    connect(eraseButton, SIGNAL(clicked()), this, SLOT(askForErase()));
     connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
 }
 
@@ -64,4 +64,9 @@ void ManagingWidget::setTranslations()
 void ManagingWidget::askForExport()
 {
     appModel->exportText(this);
+}
+
+void ManagingWidget::askForErase()
+{
+    appModel->eraseText(this);
 }
