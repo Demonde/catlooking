@@ -86,7 +86,6 @@ void NoteEditWidget::reportNoteState()
     if(textEdit->hasFocus())
     {
         appModel->reportNoteState(textEdit->toPlainText());
-        appModel->reportSelectionState(textEdit->textCursor());
         adjustTextEditPosition();
     }
 }
