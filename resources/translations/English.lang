@@ -11,6 +11,6 @@
     <item id="EraseTextButtonQuestion">You are going to erase your text.</item>
     <item id="EraseTextButtonQuestionWithExportOption">You are going to erase your text. Maybe you'd like to export it first?</item>
     <item id="EraseTextButtonErase">Erase all text</item>
-    <item id="EraseTextButtonCancel">Cancel</item>
+    <item id="EraseTextButtonCancel">I don't want to erase</item>
     <item id="EraseTextButtonExport">Export before erasing</item>
 </translation>
