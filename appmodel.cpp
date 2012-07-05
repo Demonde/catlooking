@@ -9,6 +9,8 @@
 
 AppModel* AppModel::instancePointer(0);
 ModelInfo *AppModel::NullPointer(0);
+const QString AppModel::ApplicationName("Catlooking");
+const QString AppModel::OrganizationName("Alex Sychev");
 
 AppModel::AppModel(QObject *parent) :
     QObject(parent),

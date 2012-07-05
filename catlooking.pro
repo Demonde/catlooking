@@ -1,6 +1,6 @@
 QT       += core gui network xml
 
-TARGET = catlooking
+TARGET = Catlooking
 TEMPLATE = app
 DESTDIR         = build
 OBJECTS_DIR     = build

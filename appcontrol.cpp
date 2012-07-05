@@ -11,6 +11,8 @@ AppControl::AppControl(QObject *parent) :
     desktopWidget(QApplication::desktop()),
     autoSaveTimer(new QTimer(this))
 {
+    qApp->setApplicationName(AppModel::ApplicationName);
+    qApp->setOrganizationName(AppModel::OrganizationName);
     integrateWithAppModel();
     createMainWindows();
     handleScreenChange();

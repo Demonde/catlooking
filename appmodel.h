@@ -50,6 +50,8 @@ public:
     void clearTextVaraible();
     bool isTextWasChangedSinceLastExport();
     void switchToEditState();
+    static const QString ApplicationName;
+    static const QString OrganizationName;
 
 public slots:
     void closeApplication();

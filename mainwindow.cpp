@@ -92,7 +92,7 @@ void MainWindow::setupStyleSheet(AppModel::UiTheme theme)
 void MainWindow::setIconAndTitle()
 {
     QApplication::setWindowIcon(QIcon(":/qss/resources/qss/catlooking.png"));
-    setWindowTitle(tr("Catlooking"));
+    setWindowTitle(AppModel::ApplicationName);
 }
 
 void MainWindow::updateUi()
