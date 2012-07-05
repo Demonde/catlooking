@@ -1,6 +1,5 @@
 #include <QtGui/QApplication>
 #include <QFontDatabase>
-#include <QDebug>
 #include "appcontrol.h"
 
 const int AppControl::AutoSaveTimerInterval(30 * 1000); // 30 seconds

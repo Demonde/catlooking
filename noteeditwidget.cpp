@@ -2,7 +2,6 @@
 #include <QFont>
 #include <QFontMetrics>
 #include <QTextBlock>
-#include <QDebug> // debug
 
 const int NoteEditWidget::TextEditVerticalMargin(100);
 const QString NoteEditWidget::CiceroTextSample("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium");
