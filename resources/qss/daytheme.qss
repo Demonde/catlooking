@@ -17,12 +17,7 @@ QTextEdit
 
 ManagingWidget QPushButton
 {
-    background-color: #c4a54c;
-    border-color: #000000;
-    color: #ffffff;
-}
-
-ManagingWidget QPushButton:pressed
-{
-    background-color: #ede48e;
+    background-color: #F5F5F5;
+    border-color: #3D3D3D;
+    color: #3D3D3D;
 }
