@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QDebug>
+#include <QApplication>
 #include "mainwindow.h"
 
 int const MainWindow::inactivityTimeout(3000);
@@ -92,7 +93,7 @@ void MainWindow::setupStyleSheet(AppModel::UiTheme theme)
 
 void MainWindow::setIconAndTitle()
 {
-//    QApplication::setWindowIcon(QIcon(":/images/images/catlookingwriter.png"));
+    QApplication::setWindowIcon(QIcon(":/qss/resources/qss/catlooking.png"));
     setWindowTitle(tr("Catlooking"));
 }
 

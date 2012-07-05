@@ -6,5 +6,6 @@
         <file>resources/qss/white-paper.png</file>
         <file>resources/qss/white-paper-cover.png</file>
         <file>resources/qss/old-monitor-cover.png</file>
+        <file>resources/qss/catlooking.png</file>
     </qresource>
 </RCC>
