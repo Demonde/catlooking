@@ -44,6 +44,11 @@ void MainWindow::resizeEvent(QResizeEvent *)
     noteEditWidget->setGeometry(0, 0, width(), height());
 }
 
+void MainWindow::wheelEvent(QWheelEvent *)
+{
+    onMouseMove();
+}
+
 void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * /*dataPointer*/)
 {
     if (AppModel::UiStateChanged == modelEvent)

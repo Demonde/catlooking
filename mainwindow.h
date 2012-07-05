@@ -24,6 +24,7 @@ public slots:
 protected:
     void closeEvent (QCloseEvent  *);
     void resizeEvent(QResizeEvent *);
+    void wheelEvent(QWheelEvent *);
 
 private slots:
     void onModelStateChanged(AppModel::ModelEvent, ModelInfo *);
