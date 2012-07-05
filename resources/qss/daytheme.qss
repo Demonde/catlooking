@@ -15,7 +15,7 @@ QTextEdit
     color: rgb(0, 0, 0);
 }
 
-ManagingWidget QPushButton
+ManagingWidget > QPushButton
 {
     background-color: #F5F5F5;
     border-color: #3D3D3D;
