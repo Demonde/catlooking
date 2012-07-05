@@ -43,6 +43,7 @@ private:
     static const int LineHeightPercentage;
     static const float NoteEditWidthMultiplier;
     static const int TextEditAnimationDuration;
+    static const int TextEditTextCursorCaretDeadZone;
 };
 
 #endif // NOTEEDITWIDGET_H

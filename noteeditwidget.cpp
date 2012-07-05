@@ -9,6 +9,7 @@ const QString NoteEditWidget::CiceroTextSample("Sed ut perspiciatis unde omnis i
 const int NoteEditWidget::LineHeightPercentage(122);
 const float NoteEditWidget::NoteEditWidthMultiplier(0.875);
 const int NoteEditWidget::TextEditAnimationDuration(400);
+const int NoteEditWidget::TextEditTextCursorCaretDeadZone(7);
 
 NoteEditWidget::NoteEditWidget(QWidget *parent) :
     QFrame(parent),
@@ -126,9 +127,17 @@ const QFont NoteEditWidget::getFontForTextEditWith(const int width)
 void NoteEditWidget::adjustTextEditPosition()
 {
     textEditAnimation->stop();
-    if(textEdit->cursorRect().y() <= textEdit->size().height())
+    if((textEdit->cursorRect().y() <= (textEdit->size().height()) - textEdit->font().pixelSize() * 2))
     {
-        int adjustedNoteEditYPos = (noteEditHeight / 2) - textEdit->cursorRect().y();
+        int adjustedNoteEditYPos;
+        if (textEdit->cursorRect().left() > TextEditTextCursorCaretDeadZone)
+        {
+            adjustedNoteEditYPos = (noteEditHeight / 2) - textEdit->cursorRect().bottom();
+        }
+        else
+        {
+            adjustedNoteEditYPos = textEdit->y();
+        }
         textEditAnimation->setEndValue(QRect(noteEditXPos, adjustedNoteEditYPos, noteEditWidth, noteEditHeight));
         textEditAnimation->start();
         textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
