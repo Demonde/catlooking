@@ -134,8 +134,9 @@ void NoteEditWidget::adjustTextEditPosition()
         }
         else
         {
-            adjustedNoteEditYPos = textEdit->y();
+            adjustedNoteEditYPos = (noteEditHeight / 2) - lastTextCursorBottom;
         }
+        lastTextCursorBottom = textEdit->cursorRect().bottom();
         textEditAnimation->setEndValue(QRect(noteEditXPos, adjustedNoteEditYPos, noteEditWidth, noteEditHeight));
         textEditAnimation->start();
         textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

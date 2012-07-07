@@ -37,6 +37,7 @@ private:
     int noteEditXPos;
     int noteEditYPos;
     QPropertyAnimation *textEditAnimation;
+    int lastTextCursorBottom;
     static const int TextEditVerticalMargin;
     static const QString CiceroTextSample;
     static const QFont getFontForTextEditWith(const int width);
