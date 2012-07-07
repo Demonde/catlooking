@@ -20,15 +20,11 @@ will need the following:
   
 Catlooking for Windows Compilation, Packaging
 --------------------------------------------
-- Open a command prompt, and change to the root directory of the downloaded
-  Catlooking source code.  If this isn't at "C:\catlooking", you'll have to
-  change the paths for "LIBS" and "INCLUDEPATH" in catlooking.pro.
-- From that directory run "packaging\windows\build.bat"; this will generate a
-  working catlooking.exe file in the "build" directory.
-- If you want to create an installer for Catlooking, first install Inno Setup.
-  Then run "packaging\windows\installer.bat"; you may need to edit it first
-  in order to adjust the paths to Qt and/or Inno Setup.  This will generate an
-  executable installer in the "build/windows" directory.
+- Download and install NSIS (http://www.scratchpaper.com/).
+- Open "packaging\windows\build-windows.bat", and adjust the path to Qt,
+  mingw and NSIS directory.
+- Run "packaging\windows\build-windows.bat"; this will generate a
+  working executable file and installation script (InstallCatlooking.exe).
 
 Debian Package Building
 -----------------------
