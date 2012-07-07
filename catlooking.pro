@@ -47,5 +47,5 @@ OTHER_FILES += \
 
 # Stuff for Windows
 win32 {
-    RC_FILE                 = portabase.rc
+    RC_FILE                 = catlooking.rc
 }

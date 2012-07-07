@@ -20,7 +20,7 @@ if "%clean%" == "true" (
 :theend
 
 rem Make sure these paths are appropriate for your system:
-path = %PATH%;C:\Qt\4.8.0\bin;C:\Qt\qtcreator-2.4.0\mingw\bin
+path = %PATH%;C:\QtSDK\Desktop\Qt\4.8.1\mingw\bin;C:\QtSDK\mingw\bin
 qmake catlooking.pro
 mingw32-make release
 if "%clean%" == "true" (

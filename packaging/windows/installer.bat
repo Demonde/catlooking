@@ -1,8 +1,8 @@
 @echo off
 rem Make sure these paths are appropriate for your system:
 
-SET mingw_dir=C:\Qt\qtcreator-2.4.0\mingw
-SET qt_dir=C:\Qt\4.8.0
+SET mingw_dir=C:\QtSDK\mingw
+SET qt_dir=C:\QtSDK\Desktop\Qt\4.8.1\mingw
 
 IF NOT EXIST build\windows MKDIR build\windows
 COPY %mingw_dir%\bin\mingwm10.dll build\windows
@@ -13,7 +13,3 @@ COPY %qt_dir%\bin\QtXml4.dll build\windows
 COPY %qt_dir%\bin\QtNetwork4.dll build\windows
 IF NOT EXIST build\windows\imageformats MKDIR build\windows\imageformats
 COPY %qt_dir%\plugins\imageformats\qjpeg4.dll build\windows\imageformats
-rem Copy resources to install dir
-IF NOT EXIST resources\fonts MKDIR build\windows\fonts
-COPY resources\fonts\chinese.ttc build\windows\fonts
-COPY resources\fonts\designosaur-italic.ttf build\windows\fonts
