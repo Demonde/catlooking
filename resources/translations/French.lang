@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE catlookingTranslation>
 <translation version="0.1">
-    <item id="ManagingWidgetDay">jours</item>
-    <item id="ManagingWidgetNight">la nuit</item>
-    <item id="ManagingWidgetExport">exportation</item>
-    <item id="ManagingWidgetErase">effacer</item>
-    <item id="ManagingWidgetExit">sortie</item>
-    <item id="ExportTextPrompt">Enregistrez votre texte</item>
-    <item id="ExportTextFileTypes">Fichiers texte (*.txt);;Tous les fichiers (*)</item>
+    <item id="ManagingWidgetDay">Jour</item>
+    <item id="ManagingWidgetNight">Nuit</item>
+    <item id="ManagingWidgetExport">Exportation</item>
+    <item id="ManagingWidgetErase">Supprimer</item>
+    <item id="ManagingWidgetExit">Annuler</item>
+    <item id="ExportTextPrompt">Enregistrer le texte</item>
+    <item id="ExportTextFileTypes">Fichiers textuels (*.txt);;Tous les fishiers (*)</item>
+    <item id="EraseTextButtonQuestion">Vous allez supprimer votre texte.</item>
+    <item id="EraseTextButtonQuestionWithExportOption">Vous allez supprimer votre texte. Vous voulez l’exporter d’abord, peut-etre?</item>
+    <item id="EraseTextButtonErase">Supprimer tous le texte</item>
+    <item id="EraseTextButtonCancel">Je ne veux pas le supprimer</item>
+    <item id="EraseTextButtonExport">Exporter avant supprimer</item>
 </translation>
