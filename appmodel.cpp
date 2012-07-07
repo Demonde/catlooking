@@ -130,8 +130,7 @@ void AppModel::exportText(QWidget* parent = NULL)
         writeDataToTextFile(fileName, noteEditState.text.toUtf8());
         textWasChangedSinceLastExport = false;
     }
-    uiState = AppModel::EditState;
-    emit modelWasUpdated(UiStateChanged, NullPointer);
+    switchToEditState();
 }
 
 bool AppModel::isFileExists(QString path)
@@ -171,7 +170,8 @@ void AppModel::setOpenPermissions(QString path)
 
 void AppModel::clearTextVaraible()
 {
-    reportNoteState(QString(""));
+    noteEditState.text = "";
+    reportNoteState(noteEditState.text);
 }
 
 bool AppModel::isTextWasChangedSinceLastExport()
@@ -219,7 +219,12 @@ void AppModel::eraseText(QWidget* parent = NULL)
     {
         eraseAskMessageBox.removeButton(eraseAskMessageBox.buttons().at(0));
     }
+    switchToEditState();
+}
 
+void AppModel::switchToEditState()
+{
     uiState = AppModel::EditState;
     emit modelWasUpdated(UiStateChanged, NullPointer);
+
 }
