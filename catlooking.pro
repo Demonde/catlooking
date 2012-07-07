@@ -3,9 +3,9 @@ QT       += core gui network xml
 TARGET = catlooking
 TEMPLATE = app
 DESTDIR         = build
-OBJECTS_DIR     = build
-MOC_DIR         = build
-RCC_DIR         = build
+OBJECTS_DIR     = build/tmp
+MOC_DIR         = build/tmp
+RCC_DIR         = build/tmp
 VERSION         = 2.0.0
 win32:DESTDIR = build/windows
 
