@@ -64,10 +64,13 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
     if (AppModel::NoteChanged == modelEvent)
     {
         NoteModelInfo* newInfo = dynamic_cast<NoteModelInfo*>(infoPointer);
-        if (!textEdit->hasFocus() && newInfo && (textEdit->toPlainText() != newInfo->text))
+        if(newInfo && (textEdit->toPlainText() != newInfo->text))
         {
             textEdit->setPlainText(newInfo->text);
-            resetTextEditPosition();
+            if(!textEdit->hasFocus())
+            {
+                resetTextEditPosition();
+            }
         }
     }
     if (AppModel::CursorChanged == modelEvent)
