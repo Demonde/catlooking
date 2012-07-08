@@ -38,15 +38,9 @@ private:
     QPropertyAnimation *managingWidgetAnimation;
     QRect managingWidgetShownGeometry;
     QRect managingWidgetHiddenGeometry;
-    NoteListWidget *noteListWidget;
-    QPropertyAnimation *noteListWidgetAnimation;
-    QRect noteListWidgetShownGeometry;
-    QRect noteListWidgetHiddenGeometry;
     int static const inactivityTimeout;
     int static const managingWidgetWidth;
     int static const managingWidgetHeight;
-    int static const noteListWidgetVerticalMargin;
-    int static const noteListWidgetWidth;
     void setIconAndTitle();
     void integrateWithAppModel();
     void updateUi();

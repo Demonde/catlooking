@@ -15,9 +15,6 @@ ManagingWidget::ManagingWidget(QWidget *parent) :
     setTranslations();
     setupLayouts();
     setMouseTracking(true);
-    connect(titleLineEdit, SIGNAL(cursorPositionChanged(int,int)),
-            this, SIGNAL(managingWidgetActivityEvent()));
-    connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
 }
 
 ManagingWidget::~ManagingWidget()

@@ -19,9 +19,6 @@ SOURCES += \
     managingwidget.cpp \
     translator.cpp \
     noteeditwidget.cpp
-    notestate.cpp \
-    note.cpp \
-    notewidget.cpp
 
 HEADERS  += \
     mainwindow.h\
@@ -34,7 +31,6 @@ HEADERS  += \
     noteeditwidget.h \
     modelinfo.h \
     notemodelinfo.h
-    notewidget.h
 
 debug {
     DEFINES += DEBUG
@@ -48,12 +44,6 @@ OTHER_FILES += \
     resources/qss/mainwindow.qss \
     resources/qss/daytheme.qss \
     resources/qss/darktheme.qss
-
-
-
-
-
-
 
 # Stuff for Windows
 win32 {

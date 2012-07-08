@@ -3,11 +3,10 @@
 #include <QApplication>
 #include "mainwindow.h"
 
-int const MainWindow::inactivityTimeout(5000);
+int const MainWindow::inactivityTimeout(3000);
 int const MainWindow::managingWidgetWidth(600);
 int const MainWindow::managingWidgetHeight(50);
 int const MainWindow::mouseMoveCheckingTimer(500);
-int const MainWindow::noteListWidgetWidth(380);
 
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
@@ -20,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
       noteEditWidget(new NoteEditWidget(this)),
       mouseMoveTimer(new QTimer(this)),
       oldMousePosition(QCursor::pos())
-      noteListWidgetHiddenGeometry(QRect(0, 0, 0, 0))
 {
     setIconAndTitle();
     showWindow();
@@ -28,15 +26,13 @@ MainWindow::MainWindow(QWidget *parent)
     setupInactivityMonitor();
     setupStyleSheet();
     managingWidget->raise();
-    QShortcut *shortCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_N), this);
-    connect(shortCut, SIGNAL(activated()), appModel, SLOT(importNotes()));
 }
 
 MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::closeEvent(QCloseEvent  *)
+void MainWindow::closeEvent (QCloseEvent  *)
 {
     appModel->closeApplication();
 }
@@ -126,7 +122,6 @@ void MainWindow::onInactivity()
 {
     appModel->reportWdigetMouseInactive();
     hideManagingWidget();
-    hideNoteListWidget();
 }
 
 void MainWindow::onMouseMove()
@@ -158,7 +153,6 @@ void MainWindow::showManagingWidget()
 
 void MainWindow::hideManagingWidget()
 {
-    managingWidget->clearFocusFromTitleEdit();
     managingWidgetAnimation->setEndValue(managingWidgetHiddenGeometry);
     managingWidgetAnimation->start();
     noteEditWidget->setFocus();
@@ -175,16 +169,4 @@ void MainWindow::checkMouseMovement()
             onMouseMove();
         }
     }
-{
-    noteListWidgetAnimation->stop();
-    noteListWidgetAnimation->setEndValue(noteListWidgetShownGeometry);
-    noteListWidgetAnimation->start();
-}
-
-void MainWindow::hideNoteListWidget()
-{
-    noteListWidgetAnimation->stop();
-    noteListWidgetAnimation->setEndValue(noteListWidgetHiddenGeometry);
-    noteListWidgetAnimation->start();
-
 }

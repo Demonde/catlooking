@@ -6,7 +6,6 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include "appmodel.h"
-#include <QDebug>
 
 AppModel* AppModel::instancePointer(0);
 ModelInfo *AppModel::NullPointer(0);
