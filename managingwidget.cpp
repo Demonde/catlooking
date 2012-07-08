@@ -4,19 +4,17 @@ ManagingWidget::ManagingWidget(QWidget *parent) :
     QFrame(parent),
     appModel(AppModel::getInstance()),
     dayThemeButton(new QPushButton(this)),
-    nightThemeButton(new QPushButton(this)),
+    darkThemeButton(new QPushButton(this)),
     exportButton(new QPushButton(this)),
-    helpButton(new QPushButton(this)),
+    eraseButton(new QPushButton(this)),
     exitButton(new QPushButton(this)),
-    titleLabel(new QLabel(this)),
-    titleLineEdit(new QLineEdit(this)),
-    mainLayout(new QVBoxLayout()),
-    topButtonsLayout(new QHBoxLayout()),
-    titleLayout(new QHBoxLayout())
+    mainLayout(new QHBoxLayout()),
+    reportOnMouseGoingIn(true)
 {
+    integrateWithAppModel();
     setTranslations();
     setupLayouts();
-    integrateWithAppModel();
+    setMouseTracking(true);
     connect(titleLineEdit, SIGNAL(cursorPositionChanged(int,int)),
             this, SIGNAL(managingWidgetActivityEvent()));
     connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
@@ -25,17 +23,20 @@ ManagingWidget::ManagingWidget(QWidget *parent) :
 ManagingWidget::~ManagingWidget()
 {
     delete mainLayout;
-    delete topButtonsLayout;
-    delete titleLayout;
 }
 
 void ManagingWidget::integrateWithAppModel()
 {
-    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent)),
-            this, SLOT(onModelStateChanged(AppModel::ModelEvent)));
+    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, ModelInfo *)),
+            this, SLOT(onModelStateChanged(AppModel::ModelEvent, ModelInfo *)));
+    connect(dayThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDayTheme()));
+    connect(darkThemeButton, SIGNAL(clicked()), appModel, SLOT(switchToDarkTheme()));
+    connect(exportButton, SIGNAL(clicked()), this, SLOT(askForExport()));
+    connect(eraseButton, SIGNAL(clicked()), this, SLOT(askForErase()));
+    connect(exitButton, SIGNAL(clicked()), appModel, SLOT(closeApplication()));
 }
 
-void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent)
+void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * /*infoPointer*/)
 {
     if (AppModel::TranslationChanged == modelEvent)
     {
@@ -45,31 +46,30 @@ void ManagingWidget::onModelStateChanged(AppModel::ModelEvent modelEvent)
 
 void ManagingWidget::setupLayouts()
 {
-    topButtonsLayout->addWidget(dayThemeButton);
-    topButtonsLayout->addWidget(nightThemeButton);
-    topButtonsLayout->addWidget(exportButton);
-    topButtonsLayout->addWidget(helpButton);
-    topButtonsLayout->addWidget(exitButton);
+    mainLayout->addWidget(dayThemeButton);
+    mainLayout->addWidget(darkThemeButton);
+    mainLayout->addWidget(exportButton);
+    mainLayout->addWidget(eraseButton);
+    mainLayout->addWidget(exitButton);
 
-    titleLayout->addWidget(titleLabel);
-    titleLayout->addWidget(titleLineEdit);
-
-    mainLayout->addLayout(topButtonsLayout);
-    mainLayout->addLayout(titleLayout);
     setLayout(mainLayout);
 }
 
 void ManagingWidget::setTranslations()
 {
     dayThemeButton->setText(appModel->getTranslation("ManagingWidgetDay"));
-    nightThemeButton->setText(appModel->getTranslation("ManagingWidgetNight"));
+    darkThemeButton->setText(appModel->getTranslation("ManagingWidgetNight"));
     exportButton->setText(appModel->getTranslation("ManagingWidgetExport"));
-    helpButton->setText(appModel->getTranslation("ManagingWidgetHelp"));
+    eraseButton->setText(appModel->getTranslation("ManagingWidgetErase"));
     exitButton->setText(appModel->getTranslation("ManagingWidgetExit"));
-    titleLabel->setText(appModel->getTranslation("ManagingWidgetTitle"));
 }
 
-void ManagingWidget::clearFocusFromTitleEdit()
+void ManagingWidget::askForExport()
 {
-    titleLineEdit->clearFocus();
+    appModel->exportText(this);
+}
+
+void ManagingWidget::askForErase()
+{
+    appModel->eraseText(this);
 }

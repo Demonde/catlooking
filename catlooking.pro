@@ -2,35 +2,38 @@ QT       += core gui network xml
 
 TARGET = catlooking
 TEMPLATE = app
+DESTDIR         = build
+OBJECTS_DIR     = build/tmp
+MOC_DIR         = build/tmp
+RCC_DIR         = build/tmp
+VERSION         = 2.0.0
 win32:DESTDIR = build/windows
 
 SOURCES += \
     main.cpp\
     mainwindow.cpp\
     singleapplication.cpp\
-    utils.cpp\
     appcontrol.cpp \
     appmodel.cpp \
     inactivetimer.cpp \
     managingwidget.cpp \
     translator.cpp \
-    notelistwidget.cpp \
+    noteeditwidget.cpp
     notestate.cpp \
     note.cpp \
     notewidget.cpp
 
 HEADERS  += \
-        mainwindow.h\
-        singleapplication.h\
-        utils.h\
-        appcontrol.h \
-        appmodel.h \
-        inactivetimer.h \
+    mainwindow.h\
+    singleapplication.h\
+    appcontrol.h \
+    appmodel.h \
+    inactivetimer.h \
     managingwidget.h \
     translator.h \
-    notelistwidget.h \
-    notestate.h \
-    note.h \
+    noteeditwidget.h \
+    modelinfo.h \
+    notemodelinfo.h
     notewidget.h
 
 debug {
@@ -38,12 +41,13 @@ debug {
 }
 
 RESOURCES += \
-    fonts.qrc \
     stylesheet.qrc \
     translations.qrc
 
 OTHER_FILES += \
-    resources/qss/mainwindow.qss
+    resources/qss/mainwindow.qss \
+    resources/qss/daytheme.qss \
+    resources/qss/darktheme.qss
 
 
 
@@ -51,14 +55,7 @@ OTHER_FILES += \
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+# Stuff for Windows
+win32 {
+    RC_FILE                 = catlooking.rc
+}

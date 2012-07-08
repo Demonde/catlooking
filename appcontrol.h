@@ -18,17 +18,22 @@ public slots:
 
 private slots:
     void recreateMainWindows();
+    void onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * );
 
 private:
     AppModel appModelStatic;
     AppModel *appModel;
     QList<MainWindow *> mainWindowsList;
     QDesktopWidget *desktopWidget;
+    QTimer *autoSaveTimer;
 
-    void installFonts();
+    void integrateWithAppModel();
     void createMainWindows();
     void deleteMainWindows();
     void handleScreenChange();
+    void setupAutoSaveTimer();
+
+    static const int AutoSaveTimerInterval;
 };
 
 #endif // APPCONTROL_H

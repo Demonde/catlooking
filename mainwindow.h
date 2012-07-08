@@ -7,7 +7,7 @@
 #include "appmodel.h"
 #include "inactivetimer.h"
 #include "managingwidget.h"
-#include "notelistwidget.h"
+#include "noteeditwidget.h"
 
 class MainWindow : public QFrame
 {
@@ -16,18 +16,20 @@ class MainWindow : public QFrame
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void setupStyleSheet(AppModel::UiTheme theme = AppModel::DayTheme);
 
 public slots:
     void showWindow();
 
 protected:
-    void mouseMoveEvent(QMouseEvent  *);
     void closeEvent (QCloseEvent  *);
     void resizeEvent(QResizeEvent *);
+    void wheelEvent(QWheelEvent *);
 
 private slots:
-    void onModelStateChanged(AppModel::ModelEvent);
+    void onModelStateChanged(AppModel::ModelEvent, ModelInfo *);
     void onInactivity();
+    void checkMouseMovement();
 
 private:
     AppModel *appModel;
@@ -45,7 +47,6 @@ private:
     int static const managingWidgetHeight;
     int static const noteListWidgetVerticalMargin;
     int static const noteListWidgetWidth;
-    void setupStyleSheet();
     void setIconAndTitle();
     void integrateWithAppModel();
     void updateUi();
@@ -54,9 +55,10 @@ private:
     void setManagingWidgetInitialGeometry();
     void showManagingWidget();
     void hideManagingWidget();
-    void setNoteListWidgetInitialGeometry();
-    void showNoteListWidget();
-    void hideNoteListWidget();
+    NoteEditWidget *noteEditWidget;
+    QTimer *mouseMoveTimer;
+    QPoint oldMousePosition;
+    int static const mouseMoveCheckingTimer;
 };
 
 #endif // MAINWINDOW_H

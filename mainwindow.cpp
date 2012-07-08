@@ -1,12 +1,12 @@
 #include <QShortcut>
 #include <QFile>
-#include <QDebug>
+#include <QApplication>
 #include "mainwindow.h"
 
 int const MainWindow::inactivityTimeout(5000);
 int const MainWindow::managingWidgetWidth(600);
-int const MainWindow::managingWidgetHeight(90);
-int const MainWindow::noteListWidgetVerticalMargin(40);
+int const MainWindow::managingWidgetHeight(50);
+int const MainWindow::mouseMoveCheckingTimer(500);
 int const MainWindow::noteListWidgetWidth(380);
 
 MainWindow::MainWindow(QWidget *parent)
@@ -17,9 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
       managingWidgetAnimation(new QPropertyAnimation(managingWidget, "geometry")),
       managingWidgetShownGeometry(QRect(0, 0, 0, 0)),
       managingWidgetHiddenGeometry(QRect(0, 0, 0, 0)),
-      noteListWidget(new NoteListWidget(this)),
-      noteListWidgetAnimation(new QPropertyAnimation(noteListWidget, "geometry")),
-      noteListWidgetShownGeometry(QRect(0, 0, 0, 0)),
+      noteEditWidget(new NoteEditWidget(this)),
+      mouseMoveTimer(new QTimer(this)),
+      oldMousePosition(QCursor::pos())
       noteListWidgetHiddenGeometry(QRect(0, 0, 0, 0))
 {
     setIconAndTitle();
@@ -27,18 +27,13 @@ MainWindow::MainWindow(QWidget *parent)
     integrateWithAppModel();
     setupInactivityMonitor();
     setupStyleSheet();
-    // debug
+    managingWidget->raise();
     QShortcut *shortCut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_N), this);
     connect(shortCut, SIGNAL(activated()), appModel, SLOT(importNotes()));
 }
 
 MainWindow::~MainWindow()
 {
-}
-
-void MainWindow::mouseMoveEvent(QMouseEvent  *)
-{
-    onMouseMove();
 }
 
 void MainWindow::closeEvent(QCloseEvent  *)
@@ -49,10 +44,15 @@ void MainWindow::closeEvent(QCloseEvent  *)
 void MainWindow::resizeEvent(QResizeEvent *)
 {
     setManagingWidgetInitialGeometry();
-    setNoteListWidgetInitialGeometry();
+    noteEditWidget->setGeometry(0, 0, width(), height());
 }
 
-void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent)
+void MainWindow::wheelEvent(QWheelEvent *)
+{
+    onMouseMove();
+}
+
+void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelInfo * /*dataPointer*/)
 {
     if (AppModel::UiStateChanged == modelEvent)
     {
@@ -62,8 +62,8 @@ void MainWindow::onModelStateChanged(AppModel::ModelEvent modelEvent)
 
 void MainWindow::integrateWithAppModel()
 {
-    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent)),
-            this, SLOT(onModelStateChanged(AppModel::ModelEvent)));
+    connect(appModel, SIGNAL(modelWasUpdated(AppModel::ModelEvent, ModelInfo *)),
+            this, SLOT(onModelStateChanged(AppModel::ModelEvent, ModelInfo *)));
 }
 
 void MainWindow::showWindow()
@@ -71,20 +71,32 @@ void MainWindow::showWindow()
     show();
     activateWindow();
     setWindowState(windowState() | Qt::WindowFullScreen);
+#ifdef Q_WS_WIN
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+#endif
 }
 
-void MainWindow::setupStyleSheet()
+void MainWindow::setupStyleSheet(AppModel::UiTheme theme)
 {
-    QFile qssFile(":/qss/resources/qss/mainwindow.qss");
-    qssFile.open(QFile::ReadOnly);
-    setStyleSheet(QLatin1String(qssFile.readAll()));
+    QFile qssGeneralFile(":/qss/resources/qss/mainwindow.qss");
+    qssGeneralFile.open(QFile::ReadOnly);
+    QFile qssThemeFile;
+    if(AppModel::DayTheme == theme)
+    {
+        qssThemeFile.setFileName(":/qss/resources/qss/daytheme.qss");
+    }
+    else
+    {
+        qssThemeFile.setFileName(":/qss/resources/qss/darktheme.qss");
+    }
+    qssThemeFile.open(QFile::ReadOnly);
+    setStyleSheet(QLatin1String(qssGeneralFile.readAll()) + QLatin1String(qssThemeFile.readAll()));
 }
 
 void MainWindow::setIconAndTitle()
 {
-//    QApplication::setWindowIcon(QIcon(":/images/images/catlookingwriter.png"));
-    setWindowTitle(tr("Catlooking"));
+    QApplication::setWindowIcon(QIcon(":/qss/resources/qss/catlooking.png"));
+    setWindowTitle(AppModel::ApplicationName);
 }
 
 void MainWindow::updateUi()
@@ -93,14 +105,21 @@ void MainWindow::updateUi()
     {
         close();
     }
+    if(AppModel::EditState == appModel->getUiState())
+    {
+        if(this->isEnabled())
+        {
+            noteEditWidget->setFocus();
+        }
+    }
 }
 
 void MainWindow::setupInactivityMonitor()
 {
-    setMouseTracking(true);
     connect(mouseInactiveTimer, SIGNAL(inactivityDetected()), this, SLOT(onInactivity()));
-    connect(managingWidget, SIGNAL(managingWidgetActivityEvent()),
-            mouseInactiveTimer, SLOT(notifyActivity()));
+    mouseMoveTimer->setInterval(mouseMoveCheckingTimer);
+    mouseMoveTimer->start();
+    connect(mouseMoveTimer, SIGNAL(timeout()), this, SLOT(checkMouseMovement()));
 }
 
 void MainWindow::onInactivity()
@@ -116,7 +135,7 @@ void MainWindow::onMouseMove()
     {
         appModel->reportWidgetMouseActive();
         showManagingWidget();
-        showNoteListWidget();
+        noteEditWidget->resetTextEditPosition();
     }
     mouseInactiveTimer->notifyActivity();
 }
@@ -142,20 +161,20 @@ void MainWindow::hideManagingWidget()
     managingWidget->clearFocusFromTitleEdit();
     managingWidgetAnimation->setEndValue(managingWidgetHiddenGeometry);
     managingWidgetAnimation->start();
+    noteEditWidget->setFocus();
+    noteEditWidget->adjustTextEditPosition();
 }
 
-void MainWindow::setNoteListWidgetInitialGeometry()
+void MainWindow::checkMouseMovement()
 {
-    int yPoint = managingWidgetShownGeometry.bottom() + noteListWidgetVerticalMargin;
-    int noteListWidgetHeight = height() - 2 * yPoint;
-    noteListWidgetHiddenGeometry = QRect(width(), yPoint,
-                                         noteListWidgetWidth, noteListWidgetHeight);
-    noteListWidgetShownGeometry = QRect(width() - noteListWidgetWidth, yPoint,
-                                        noteListWidgetWidth, noteListWidgetHeight);
-    noteListWidget->setGeometry(noteListWidgetHiddenGeometry);
-}
-
-void MainWindow::showNoteListWidget()
+    if(QCursor::pos() != oldMousePosition)
+    {
+        oldMousePosition = QCursor::pos();
+        if(geometry().contains(QCursor::pos()))
+        {
+            onMouseMove();
+        }
+    }
 {
     noteListWidgetAnimation->stop();
     noteListWidgetAnimation->setEndValue(noteListWidgetShownGeometry);

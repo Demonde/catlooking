@@ -3,10 +3,8 @@
 
 #include <QFrame>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QPushButton>
-#include <QLabel>
-#include <QLineEdit>
+#include <QMouseEvent>
 #include "appmodel.h"
 
 class ManagingWidget : public QFrame
@@ -18,7 +16,9 @@ public:
     void clearFocusFromTitleEdit();
 
 private slots:
-    void onModelStateChanged(AppModel::ModelEvent);
+    void onModelStateChanged(AppModel::ModelEvent, ModelInfo *);
+    void askForExport();
+    void askForErase();
 
 signals:
     void managingWidgetActivityEvent();
@@ -27,17 +27,14 @@ private:
     AppModel *appModel;
     void integrateWithAppModel();
     QPushButton *dayThemeButton;
-    QPushButton *nightThemeButton;
+    QPushButton *darkThemeButton;
     QPushButton *exportButton;
-    QPushButton *helpButton;
+    QPushButton *eraseButton;
     QPushButton *exitButton;
-    QLabel *titleLabel;
-    QLineEdit *titleLineEdit;
-    QVBoxLayout *mainLayout;
-    QHBoxLayout *topButtonsLayout;
-    QHBoxLayout *titleLayout;
+    QHBoxLayout *mainLayout;
     void setTranslations();
     void setupLayouts();
+    bool reportOnMouseGoingIn;
 };
 
 #endif // MANAGINGWIDGET_H

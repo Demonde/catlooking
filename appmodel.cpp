@@ -1,15 +1,24 @@
 #include <QApplication>
+#include <QSettings>
 #include <QMutex>
+#include <QFileDialog>
+#include <QDesktopServices>
+#include <QMessageBox>
+#include <QPushButton>
 #include "appmodel.h"
 #include <QDebug>
 
 AppModel* AppModel::instancePointer(0);
+ModelInfo *AppModel::NullPointer(0);
+const QString AppModel::ApplicationName("Catlooking");
+const QString AppModel::OrganizationName("Alex Sychev");
 
 AppModel::AppModel(QObject *parent) :
     QObject(parent),
     uiState(AppModel::OptionsState),
     activeWidgetCounter(0),
-    translator(new Translator(this))
+    translator(new Translator(this)),
+    textWasChangedSinceLastExport(true)
 {
     QMutex creationMutex;
     creationMutex.lock();
@@ -26,8 +35,19 @@ AppModel* AppModel::getInstance()
 
 void AppModel::closeApplication()
 {
+    saveText();
     uiState = AppModel::CloseState;
-    emit modelWasUpdated(UiStateChanged);
+    emit modelWasUpdated(UiStateChanged, NullPointer);
+}
+
+void AppModel::switchToDayTheme()
+{
+    setVisualTheme(AppModel::DayTheme);
+}
+
+void AppModel::switchToDarkTheme()
+{
+    setVisualTheme(AppModel::DarkTheme);
 }
 
 AppModel::UiState AppModel::getUiState()
@@ -59,60 +79,153 @@ QString AppModel::getTranslation(QString elementId)
     return translator->getTranslation(elementId);
 }
 
-void AppModel::importNotes()
+void AppModel::reportNoteState(QString newNoteText)
 {
-    // debug
-    Note* note = new Note();
-    note->appendNoteState(QDateTime::currentDateTime(), "Hello", "Moto", 0);
-    noteList.append(note);
-    note = new Note();
-    note->appendNoteState(QDateTime::currentDateTime(), "Second note", "Yes it is", 2);
-    noteList.append(note);
-    note = new Note();
-    note->appendNoteState(QDateTime::currentDateTime(), "3 note", "Yes it is", 2);
-    noteList.append(note);
-    note = new Note();
-    note->appendNoteState(QDateTime::currentDateTime(), "4 note", "Yes it is", 2);
-    noteList.append(note);
-    note = new Note();
-    note->appendNoteState(QDateTime::currentDateTime(), "5 note", "Yes it is", 2);
-    noteList.append(note);
-    note = new Note();
-    note->appendNoteState(QDateTime::currentDateTime(), "6 note", "Yes it is", 2);
-    noteList.append(note);
-    note = new Note();
-    note->appendNoteState(QDateTime::currentDateTime(), "7 note", "Yes it is", 2);
-    noteList.append(note);
-    qDebug() << "Notes were imported";
-    // end debug
-    emit modelWasUpdated(DataChanged);
+    noteEditState.text = newNoteText;
+    textWasChangedSinceLastExport = true;
+    emit modelWasUpdated(AppModel::NoteChanged, &noteEditState);
 }
 
-int AppModel::getNoteCount()
+void AppModel::reportSelectionState(QTextCursor newTextCursor)
 {
-    return noteList.count();
+    noteEditState.textCursor = newTextCursor;
+    emit modelWasUpdated(AppModel::CursorChanged, &noteEditState);
 }
 
-QString AppModel::getNoteText(int noteIndex)
+void AppModel::setVisualTheme(UiTheme theme)
 {
-    if (noteIndex < noteList.count())
+    if(AppModel::DayTheme == theme)
     {
-        return noteList.at(noteIndex)->getText();
+        emit modelWasUpdated(AppModel::DayThemeEnabled, NULL);
+    }
+    if(AppModel::DarkTheme == theme)
+    {
+        emit modelWasUpdated(AppModel::DarkThemeEnabled, NULL);
+    }
+}
+
+void AppModel::restoreText()
+{
+    QSettings settings("catlooking.com", "catlooking");
+    reportNoteState(settings.value("text").toString());
+}
+
+void AppModel::saveText()
+{
+    QSettings settings("catlooking.com", "catlooking");
+    settings.setValue("text", noteEditState.text);
+}
+
+void AppModel::exportText(QWidget* parent = NULL)
+{
+    QString fileName = QFileDialog::getSaveFileName(parent,
+                                getInstance()->getTranslation("ExportTextPrompt"),
+                                QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation),
+                                getInstance()->getTranslation("ExportTextFileTypes"));
+    if (!fileName.isEmpty())
+    {
+        if (isFileExists(fileName))
+        {
+            removeFile(fileName);
+        }
+        writeDataToTextFile(fileName, noteEditState.text.toUtf8());
+        textWasChangedSinceLastExport = false;
+    }
+    switchToEditState();
+}
+
+bool AppModel::isFileExists(QString path)
+{
+    QFile file;
+    file.setFileName(path);
+    return file.exists();
+}
+
+void AppModel::removeFile(QString path)
+{
+    QFile file;
+    file.setFileName(path);
+    if (file.exists())
+    {
+        setOpenPermissions(path);
+        file.remove();
+    }
+}
+
+void AppModel::writeDataToTextFile(QString path, QByteArray data)
+{
+    QFile dataFile(path);
+    if (dataFile.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        dataFile.write(data);
+    }
+}
+
+void AppModel::setOpenPermissions(QString path)
+{
+    QFile file;
+    file.setFileName(path);
+    file.setPermissions(QFile::WriteOwner | QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther
+                        | QFile::ReadOwner | QFile::ReadUser | QFile::ReadGroup | QFile::ReadOther);
+}
+
+void AppModel::clearTextVaraible()
+{
+    noteEditState.text = "";
+    reportNoteState(noteEditState.text);
+}
+
+bool AppModel::isTextWasChangedSinceLastExport()
+{
+    return textWasChangedSinceLastExport && !noteEditState.text.isEmpty();
+}
+
+void AppModel::eraseText(QWidget* parent = NULL)
+{
+    QMessageBox eraseAskMessageBox(parent);
+
+    if(getInstance()->isTextWasChangedSinceLastExport())
+    {
+        eraseAskMessageBox.setText(getInstance()->getTranslation("EraseTextButtonQuestionWithExportOption"));
     }
     else
     {
-        return QString();
+        eraseAskMessageBox.setText(getInstance()->getTranslation("EraseTextButtonQuestion"));
     }
+    QPushButton *exportTextButton = NULL;
+    QPushButton *eraseTextButton;
+    if(getInstance()->isTextWasChangedSinceLastExport())
+    {
+        exportTextButton =
+                eraseAskMessageBox.addButton(getInstance()->getTranslation("EraseTextButtonExport"), QMessageBox::ActionRole);
+    }
+    eraseTextButton =
+            eraseAskMessageBox.addButton(getInstance()->getTranslation("EraseTextButtonErase"), QMessageBox::ActionRole);
+            eraseAskMessageBox.addButton(getInstance()->getTranslation("EraseTextButtonCancel"), QMessageBox::RejectRole);
+
+    eraseAskMessageBox.exec();
+    if (eraseAskMessageBox.clickedButton() == eraseTextButton)
+    {
+        getInstance()->clearTextVaraible();
+    }
+    if (getInstance()->isTextWasChangedSinceLastExport() && (eraseAskMessageBox.clickedButton() == exportTextButton))
+    {
+        getInstance()->exportText(parent);
+        if(!getInstance()->isTextWasChangedSinceLastExport())
+        {
+            getInstance()->clearTextVaraible();
+        }
+    }
+    while(!eraseAskMessageBox.buttons().isEmpty())
+    {
+        eraseAskMessageBox.removeButton(eraseAskMessageBox.buttons().at(0));
+    }
+    switchToEditState();
 }
 
-QString AppModel::getNoteTitle(int noteIndex)
+void AppModel::switchToEditState()
 {
-    if (noteIndex < noteList.count())
-    {
-        return noteList.at(noteIndex)->getTitle();
-    }
-    else
-    {
-        return QString();
-    }
+    uiState = AppModel::EditState;
+    emit modelWasUpdated(UiStateChanged, NullPointer);
+
 }

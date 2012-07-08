@@ -1,0 +1,42 @@
+Windows Development Environment
+-------------------------------
+To compile Catlooking for use as a Windows desktop application, you will
+need the following:
+- Windows XP, Vista, or 7
+- A recent version of Qt 4 (http://qt.nokia.com/downloads).  It's easiest to
+  get started with a version that comes with the MinGW compiler, since I
+  haven't tested the latest code with Visual Studio.  Add both the "bin"
+  directory and the "mingw\bin" directory that come with it to your "Path"
+  environment variable.
+
+Linux/UNIX Development Environment
+----------------------------------
+To compile Catlooking for use as a Linux or UNIX desktop application, you
+will need the following:
+- g++ (any relatively recent version should work)
+- A recent version of Qt 4 (including qmake and development headers)
+- Other packages as needed to satisfy the above requirements or create
+  packages for your OS/distribution
+  
+Catlooking for Windows Compilation, Packaging
+--------------------------------------------
+- Download and install NSIS (http://www.scratchpaper.com/).
+- Open "packaging\windows\build-windows.bat", and adjust the path to Qt,
+  mingw and NSIS directory.
+- Run "packaging\windows\build-windows.bat"; this will generate a
+  working executable file and installation script (InstallCatlooking.exe).
+
+Debian Package Building
+-----------------------
+To create a Debian package for the desktop version of Catlooking, from the
+root Catlooking source directory run "packaging/linux/debian.sh".  If you have
+all the appropriate development packages installed, the .deb file will be
+generated in the build/debian directory.
+
+Linux/UNIX compilation
+----------------------
+- Set the QMAKESPEC and QTDIR environment variables as appropriate for your
+  platform
+- Run qmake on catlooking.pro
+- Run make
+

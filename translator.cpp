@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QFile>
 #include <QDomDocument>
 #include <QDomElement>
@@ -92,12 +91,12 @@ void Translator::loadTranslation(QLocale locale)
         int errorColumn;
         if (!domDocument.setContent(&xmlFile, true, &errorStr, &errorLine,
                              &errorColumn)) {
-            qWarning() << "Error of translation xml file"
-                    << getTranslationFileName(locale) << errorLine << errorColumn << errorStr;
+//            qWarning() << "Error of translation xml file"
+//                    << getTranslationFileName(locale) << errorLine << errorColumn << errorStr;
         }
         QDomElement root = domDocument.documentElement();
         if (root.tagName() != "translation") {
-            qWarning() << "Root element is not <translation>";
+//            qWarning() << "Root element is not <translation>";
         }
         // Reading the translations
         QDomElement child = root.firstChildElement();
