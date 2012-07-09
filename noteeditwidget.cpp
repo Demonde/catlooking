@@ -65,17 +65,19 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
         NoteModelInfo* newInfo = dynamic_cast<NoteModelInfo*>(infoPointer);
         if(newInfo && (textEdit->toPlainText() != newInfo->text))
         {
-            if(!textEdit->hasFocus())
+            textEdit->setPlainText(newInfo->text);
+            textEdit->setTextCursor(newInfo->textCursor);
+            if(!textEdit->isActiveWindow())
             {
+                textEdit->ensureCursorVisible();
                 resetTextEditPosition();
             }
-            textEdit->setPlainText(newInfo->text);
         }
     }
     if (AppModel::CursorChanged == modelEvent)
     {
         NoteModelInfo* newInfo = dynamic_cast<NoteModelInfo*>(infoPointer);
-        if(!textEdit->hasFocus() && newInfo)
+        if(newInfo && (textEdit->textCursor() != newInfo->textCursor))
         {
             textEdit->setTextCursor(newInfo->textCursor);
             textEdit->ensureCursorVisible();
@@ -87,7 +89,7 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
 void NoteEditWidget::reportNoteState()
 {
     appModel->reportNoteState(textEdit->toPlainText());
-    if(textEdit->hasFocus())
+    if(textEdit->isActiveWindow())
     {
         adjustTextEditPosition();
     }
@@ -95,7 +97,7 @@ void NoteEditWidget::reportNoteState()
 
 void NoteEditWidget::reportSelectionState()
 {
-    if(textEdit->hasFocus())
+    if(textEdit->isActiveWindow())
     {
         appModel->reportSelectionState(textEdit->textCursor());
     }
