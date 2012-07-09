@@ -20,7 +20,6 @@ NoteEditWidget::NoteEditWidget(QWidget *parent) :
     integrateWithAppModel();
     setupVisualCover();
     connect(textEdit, SIGNAL(textChanged()), this, SLOT(reportNoteState()));
-    connect(textEdit, SIGNAL(selectionChanged()), this, SLOT(reportSelectionState()));
     connect(textEdit, SIGNAL(cursorPositionChanged()), this, SLOT(reportSelectionState()));
     textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -66,11 +65,11 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
         NoteModelInfo* newInfo = dynamic_cast<NoteModelInfo*>(infoPointer);
         if(newInfo && (textEdit->toPlainText() != newInfo->text))
         {
-            textEdit->setPlainText(newInfo->text);
             if(!textEdit->hasFocus())
             {
                 resetTextEditPosition();
             }
+            textEdit->setPlainText(newInfo->text);
         }
     }
     if (AppModel::CursorChanged == modelEvent)
@@ -79,6 +78,7 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
         if(!textEdit->hasFocus() && newInfo)
         {
             textEdit->setTextCursor(newInfo->textCursor);
+            textEdit->ensureCursorVisible();
         }
         resetTextEditPosition();
     }
@@ -86,9 +86,9 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
 
 void NoteEditWidget::reportNoteState()
 {
+    appModel->reportNoteState(textEdit->toPlainText());
     if(textEdit->hasFocus())
     {
-        appModel->reportNoteState(textEdit->toPlainText());
         adjustTextEditPosition();
     }
 }
