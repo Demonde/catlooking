@@ -66,7 +66,9 @@ void NoteEditWidget::onModelStateChanged(AppModel::ModelEvent modelEvent, ModelI
         if(newInfo && (textEdit->toPlainText() != newInfo->text))
         {
             textEdit->setPlainText(newInfo->text);
+#ifndef Q_OS_LINUX
             textEdit->setTextCursor(newInfo->textCursor);
+#endif
             if(!textEdit->isActiveWindow())
             {
                 textEdit->ensureCursorVisible();
