@@ -3,7 +3,7 @@
 #include <QFontMetrics>
 #include <QTextBlock>
 
-const int NoteEditWidget::TextEditVerticalMargin(100);
+const int NoteEditWidget::TextEditMargin(100);
 const QString NoteEditWidget::CiceroTextSample("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium");
 const int NoteEditWidget::LineHeightPercentage(122);
 const float NoteEditWidget::NoteEditWidthMultiplier(0.875);
@@ -39,10 +39,17 @@ void NoteEditWidget::setFocus()
 
 void NoteEditWidget::resizeEvent(QResizeEvent *)
 {
-    noteEditHeight = height() - TextEditVerticalMargin;
-    noteEditWidth = static_cast<int>(NoteEditWidthMultiplier * noteEditHeight);
-    noteEditXPos = (width() - noteEditWidth) / 2;
-    noteEditYPos = (height() - noteEditHeight) / 2;
+    int screenWidth = width();
+    int screenHeight = height();
+    if (screenWidth > screenHeight) { // we have a classical landscape monitor
+        noteEditHeight = screenHeight - TextEditMargin;
+        noteEditWidth = static_cast<int>(noteEditHeight * NoteEditWidthMultiplier);
+    } else { // we have monitor standing in portrait
+        noteEditWidth = screenWidth - TextEditMargin;
+        noteEditHeight = static_cast<int>(noteEditWidth / NoteEditWidthMultiplier);
+    }
+    noteEditXPos = (screenWidth - noteEditWidth) / 2;
+    noteEditYPos = (screenHeight - noteEditHeight) / 2;
 
     visualCover->setGeometry(0, 0, width(), height());
     textEdit->setGeometry(noteEditXPos, noteEditYPos, noteEditWidth, noteEditHeight);
