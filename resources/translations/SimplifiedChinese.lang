@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE catlookingTranslation>
+<translation version="0.1">
+    <item id="ManagingWidgetDay">白天</item>
+    <item id="ManagingWidgetNight">夜晚</item>
+    <item id="ManagingWidgetExport">导出</item>
+    <item id="ManagingWidgetErase">清除</item>
+    <item id="ManagingWidgetExit">退出</item>
+    <item id="ExportTextPrompt">保存文本</item>
+    <item id="ExportTextFileTypes">文本文档 (*.txt);;所有文件 (*)</item>
+    <item id="EraseTextButtonQuestion">您将要清除文本。</item>
+    <item id="EraseTextButtonQuestionWithExportOption">您将要清除文本。您难道不想先导出吗？</item>
+    <item id="EraseTextButtonErase">清除所有文本</item>
+    <item id="EraseTextButtonCancel">我不想清除</item>
+    <item id="EraseTextButtonExport">先导出再清除</item>
+</translation>
