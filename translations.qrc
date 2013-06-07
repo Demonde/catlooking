@@ -3,5 +3,8 @@
         <file>resources/translations/English.lang</file>
         <file>resources/translations/French.lang</file>
         <file>resources/translations/Russian.lang</file>
+        <file>resources/translations/Chinese.lang</file>
+        <file>resources/translations/Chinese.Taiwan.lang</file>
+        <file>resources/translations/Chinese.HongKong.lang</file>
     </qresource>
 </RCC>
